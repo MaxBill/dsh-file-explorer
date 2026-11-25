@@ -92,6 +92,14 @@ try {
   r = await call('POST', '/mkdir', { path: SCRATCH, name: '新项目' })
   check('creates a folder with a non-ASCII name', r.status === 200, r.body)
 
+  // One file per icon kind, so the listing classifier stays honest.
+  const kinds = { 'doc.docx': 'word', 'sheet.xlsx': 'excel', 'slides.pptx': 'ppt', 'pack.zip': 'archive', 'song.mp3': 'audio', 'clip.mp4': 'video', 'file.pdf': 'pdf', 'shot.png': 'image', 'note.txt': 'text', 'app.dmg': 'archive', 'source.ts': 'text' }
+  for (const name of Object.keys(kinds)) await writeFile(join(SCRATCH, name), 'x')
+  r = await call('GET', '/list', { path: SCRATCH })
+  const found = Object.fromEntries((r.body.entries || []).map(e => [e.name, e.kind]))
+  const wrong = Object.entries(kinds).filter(([name, kind]) => found[name] !== kind)
+  check('classifies the icon kinds', wrong.length === 0, { wrong, found })
+
   r = await call('POST', '/rename', { path: join(SCRATCH, 'a', 'two.txt'), name: 'one.txt' })
   check('refuses to overwrite on rename (409)', r.status === 409, r.body.message)
   r = await call('POST', '/rename', { path: join(SCRATCH, 'a', 'one.txt'), name: 'renamed.txt' })

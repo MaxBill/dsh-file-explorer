@@ -58,7 +58,7 @@
 | `lib/client.js` | 浏览器端：`window.__ModuleLoader__` 工厂模块，注册左侧栏图标与 `main` 面板 |
 | `cordis.patch.yml` | Bundle patch，把 `file-explorer` 条目插入 Loader |
 
-图标是内联 SVG：`SHAPES` 既接受 24 网格的描边路径数组，也接受 `{ viewBox, parts: [{ d, fill }] }` 形式的填充图形（当前文件夹图标就是后者，按 44 / 16px 两档自适应缩放）。
+图标是内联 SVG：`SHAPES` 既接受 24 网格的描边路径数组，也接受 `{ viewBox, parts: [{ d, fill }] }` 形式的填充图形。文件区按类型用 **10 套双色图标**：文件夹、文本、PDF、Word、Excel、PPT、压缩包、图片、音频、视频（其余类型回退到线性文件图标）。每套图形的 `viewBox` 都按内容包围盒重新算过，文档统一高度、文件夹略放大，所以 44px 网格与 16px 列表里视觉大小一致。
 
 ## 安装
 
