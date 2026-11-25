@@ -38,7 +38,7 @@ Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBil
 
 **File or folder**: preview (open, for folders), open with the default app, reveal in Finder, rename…, duplicate, copy, cut, copy path, copy name, move to Trash.
 
-**Folders also get**: **添加为工作区** — asks for confirmation first ("把“xxx”注册为 DSH 工作区？"), then registers the folder through the client's `workspaces.create({ path })`, so it appears in the sidebar's 工作区 list right away; adding the same path twice reports the host's reason, and cancelling does nothing.
+**Folders also get**: **添加为工作区** — asks for confirmation first ("确认将 xxx 添加为 DSH 工作区？"), then registers the folder through the client's `workspaces.create({ path })`, so it appears in the sidebar's 工作区 list right away; adding the same path twice reports the host's reason, and cancelling does nothing.
 
 **Empty area**: new folder…, new file…, paste, reveal this folder, refresh.
 
