@@ -22,7 +22,7 @@ Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBil
 - **Hidden files** — dotfiles are hidden by default and shown with one toggle.
 - **Preview** — text files up to 512 KB render as monospace text, images up to 8 MB render inline from a data URL, anything else shows its metadata.
 - **Details pane** — right-click "显示详情", or flip the right pane to 详情, to see name, type, size, location, created, modified and permissions. Folders have no preview, so selecting one shows its details (size reads as an item count).
-- **Quick toolbar** — cut, copy, paste, rename and delete on the left, then **排序** (name / size / modified) and **更多** (undo, select all, deselect all, invert selection, options) on the right. Buttons grey out when nothing is selected.
+- **Quick toolbar** — **新建** (new folder / new file) first, then cut, copy, paste, rename and delete, and on the right **排序** (name / size / modified) and **更多** (undo, select all, deselect all, invert selection, options) on the right. Buttons grey out when nothing is selected.
 - **Multi-select** — `⌘`-click to add or drop single rows, `⇧`-click to select a range; cut, copy and delete act on the whole selection.
 - **Undo** — delete, rename, move and create can all be undone (the last 20 steps), and the listing refreshes afterwards.
 - **Context menu** — right-click a file or folder, or the empty area, for the common operations (see below).
