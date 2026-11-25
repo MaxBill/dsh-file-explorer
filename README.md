@@ -58,6 +58,8 @@ Limits: 512 KB of text, 8 MB of image, 2000 entries per directory (the footer sa
 | `lib/client.js` | Browser half: a `window.__ModuleLoader__` factory module registering the sidebar icon and the `main` panel |
 | `cordis.patch.yml` | Bundle patch that inserts the `file-explorer` Loader entry |
 
+Icons are inline SVG: `SHAPES` accepts either a 24-grid stroke path list or `{ viewBox, parts: [{ d, fill }] }` filled artwork - the folder icon is the latter, scaled for both the 44px grid and the 16px row.
+
 ## Install
 
 The plugin mounts the standard DSH bundle way:

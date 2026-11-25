@@ -58,6 +58,8 @@
 | `lib/client.js` | 浏览器端：`window.__ModuleLoader__` 工厂模块，注册左侧栏图标与 `main` 面板 |
 | `cordis.patch.yml` | Bundle patch，把 `file-explorer` 条目插入 Loader |
 
+图标是内联 SVG：`SHAPES` 既接受 24 网格的描边路径数组，也接受 `{ viewBox, parts: [{ d, fill }] }` 形式的填充图形（当前文件夹图标就是后者，按 44 / 16px 两档自适应缩放）。
+
 ## 安装
 
 插件按 DSH 的标准 bundle 方式挂载：
