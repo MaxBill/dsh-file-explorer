@@ -74,6 +74,7 @@ For when you would rather not put the bytes into the context: right-click → **
   | PDF | pdf | `<embed type="application/pdf">` (the browser's reader: paging and zoom) plus an "open in a new window" link |
   | Markdown | md / markdown | Built-in lightweight renderer: headings, bold/italic, inline code, links, lists, quotes, fenced code |
   | Tables | csv / tsv | Parsed into a table (first row is the header, quoted commas supported), up to 200 rows |
+  | Excel | xlsx / xlsm | Parsed by the host itself (zip + XML, no third-party library), with a tab per worksheet, first row as the header, up to 500 rows × 60 columns |
   | HTML | html / htm | Sandboxed iframe (`sandbox`, scripts do not run) |
   | Audio / video | mp3 / wav / m4a / flac / ogg / opus / aiff; mp4 / mov / webm / ogv | Native `<audio>` / `<video>` players — DSH itself does not preview these |
   | Text / code | the rest of the text kinds | Monospace, up to 512 KB |
@@ -81,6 +82,8 @@ For when you would rather not put the bytes into the context: right-click → **
 ![Markdown preview](docs/preview-markdown.png)
 
 ![PDF preview](docs/preview-pdf.png)
+
+![Excel preview](docs/preview-xlsx.png)
 
 - **Details pane** — right-click "显示详情", or flip the right pane to 详情, to see name, type, size, location, created, modified and permissions. Folders have no preview, so selecting one shows its details (size reads as an item count).
 - **Quick toolbar** — **新建** (new folder / new file) first, then cut, copy, paste, rename and delete, then **排序** (name / size / modified) and **更多** (undo, select all, deselect all, invert selection, options, about) on the right. 选项 opens a settings window (not a submenu) with four sections: 显示 (hidden files switch), 视图 (图标 / 列表 segmented control), 右侧面板 (隐藏 / 预览 / 详情, with 隐藏 as the default) and 切换动画 (a master switch plus the effect picker) — all of it mirrors the toolbar's own toggles. Everything there matches the toolbar's own icon group, so either can drive it, and **every setting is remembered** — hidden files, view, the right pane's visibility and mode, language and the transition effect all live in the browser, so closing the panel or reloading the page keeps them. A small sample strip under the effect pills replays the chosen animation as soon as you pick it. Buttons grey out when nothing is selected.

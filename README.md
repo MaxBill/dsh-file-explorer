@@ -72,6 +72,7 @@
   | PDF | pdf | `<embed type="application/pdf">`，浏览器自带阅读器，可翻页缩放，附「在新窗口打开」 |
   | Markdown | md / markdown | 自带轻量渲染：标题、粗斜体、行内代码、链接、列表、引用、代码块 |
   | 表格 | csv / tsv | 解析成表格（首行当表头，支持引号内逗号），最多 200 行 |
+  | Excel | xlsx / xlsm | 宿主自己解析 zip+XML（不依赖第三方库），**按工作表分页签**显示，首行当表头，最多 500 行 × 60 列 |
   | HTML | html / htm | 沙箱 iframe（`sandbox`，不执行脚本） |
   | 音频 / 视频 | mp3 / wav / m4a / flac / ogg / opus / aiff；mp4 / mov / webm / ogv | `<audio>` / `<video>` 原生播放器（DSH 自己不预览这两类，这里算多的） |
   | 文本 / 代码 | 其余文本类 | 等宽只读，≤ 512 KB |
@@ -80,6 +81,8 @@
   ![Markdown 预览](docs/preview-markdown.png)
 
   ![PDF 预览](docs/preview-pdf.png)
+
+  ![Excel 预览](docs/preview-xlsx.png)
 
   工具栏最右侧的预览图标可一键**收起 / 展开**右侧面板，收起后列表占满整宽。**默认是收起的**：插件打开时是图标视图、右侧面板不展开，需要时再点那个图标（或 选项 → 右侧面板）。
 - **详情面板**：右键「显示详情」，或在右侧面板切到「详情」，查看 **名称 / 类型 / 大小 / 位置 / 创建时间 / 修改时间 / 权限**；文件夹没有预览，选中即自动显示详情（大小位置显示条目数）。

@@ -85,6 +85,13 @@ try {
   r = await call('GET', '/stat', { path: join(SCRATCH, 'a') })
   check('details for a folder', r.status === 200 && r.body.dir === true && r.body.items === 0, r.body)
 
+  r = await call('GET', '/raw', { path: join(SCRATCH, 'seed.txt') })
+  check('raw streams the file bytes', r.status === 200 && String(r.body) === 'seed', String(r.body))
+  r = await call('GET', '/raw', { path: join(SCRATCH, 'a') })
+  check('raw refuses a folder', r.status === 400, r.body)
+  r = await call('GET', '/sheet', { path: join(SCRATCH, 'seed.txt') })
+  check('sheet refuses a file that is not a workbook', r.status === 415, r.body)
+
   r = await call('POST', '/newfile', { path: join(SCRATCH, 'a'), name: 'one.txt' })
   check('creates a file', r.status === 200, r.body)
   r = await call('POST', '/newfile', { path: join(SCRATCH, 'a'), name: 'two.txt' })
