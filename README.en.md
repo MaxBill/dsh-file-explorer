@@ -2,7 +2,9 @@
 
 [简体中文](README.md) | **English**
 
-A **文件管理器** entry in the DeepSeek Harness left sidebar that opens a full file browser in the main column: browse folders, filter, and preview text and images.
+A **文件管理器** entry in the DeepSeek Harness left sidebar that opens a real working file panel in the main column: icon and list views, text and image previews, draggable column widths, and a full context menu. What sets it apart is that it is **wired into DSH itself** — right-click a folder to turn it into a workspace, right-click a document to hand it to the current conversation.
+
+> Most file plugins stop at "you can look at files". This one takes the next step: **browse → find → straight into a workspace or straight into the conversation**, with no Finder detour, no copying paths, no moving the file somewhere first.
 
 | List view with the context menu | Icons view |
 |:--|:--|
@@ -15,6 +17,32 @@ A **文件管理器** entry in the DeepSeek Harness left sidebar that opens a fu
 ![About window](docs/about.png)
 
 Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBill](https://github.com/MaxBill) · License: Apache-2.0
+
+## Two DSH-specific actions
+
+Any file browser can list a directory. The saving is in what happens **after** you find the file, so these two get their own section:
+
+### ① 添加为工作区 — on a folder
+
+Right-click any folder → **添加为工作区** → confirm. The sidebar's 工作区 list immediately gains an entry, and a new session opened there gives the agent read/write, terminal and search scoped to that directory.
+
+What it saves is the detour: back to DSH, find "add workspace", then click down from your home directory to the folder you were already looking at.
+
+![Adding a folder as a workspace](docs/workspace-menu.png)
+
+### ② 添加到会话 — on a document
+
+Right-click an image, text, PDF, Word, Excel or PowerPoint file → **添加到会话**. The panel switches back to the current conversation with the attachment card already in the composer — exactly what dropping the file on the input or using the paperclip produces, without leaving the file manager to find it.
+
+Then just ask: "which months overspent in this spreadsheet?" or "summarise the conclusions in this PDF".
+
+![Adding a document to the conversation](docs/session-menu.png)
+
+### In practice
+
+- **Starting a project**: glance at the icon grid → double-click into the folder → right-click 添加为工作区 → have the agent read the code and run the build.
+- **Reading a report**: sort the list by modified time → right-click the xlsx → 添加到会话 → "total the Q3 spend into a table".
+- **Tidying names**: `F2` to rename, `⌘Z` when you regret it, drag a header divider when the columns feel cramped.
 
 ## What it does
 
