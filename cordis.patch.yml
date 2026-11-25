@@ -1,0 +1,7 @@
+# dsh-file-explorer bundle patch
+#
+# Mounts the plugin when the package is listed in the profile's
+# package.json -> dsh.profile.bundles.
+- insert:
+    - id: file-explorer
+      name: dsh-file-explorer
