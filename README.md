@@ -187,11 +187,19 @@ dsh plugin --profile desktop add @maxbill/dsh-file-explorer
 - `main`：稳定分支，只在验证通过后从 `develop` 合并进来。
 - `develop`：日常开发都在这里提交，跑完测试、确认没问题再合进 `main`。
 
+`main` 已开启分支保护（**必须走 PR**，管理员同样受限；禁止强推与删除），所以合并只有一条路：
+
 ```sh
 git switch develop
-# ...改代码、提交...
-npm test && node /tmp/test-preview.mjs   # 本地验证
-git switch main && git merge --ff-only develop && git push origin main
+# ...改代码、提交、跑测试...
+git push origin develop
+gh pr create --base main --head develop     # 然后审阅并合并
+```
+
+合并用 **rebase**（保持线性历史），合并后把 develop 对齐到 main：
+
+```sh
+git switch develop && git fetch origin && git reset --hard origin/main
 ```
 
 ## 开发

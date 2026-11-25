@@ -179,11 +179,19 @@ Then run `pnpm install` in that profile directory and restart DSH.
 - `main` — stable; only receives merges from `develop` once a change has been verified.
 - `develop` — day-to-day work lands here first: test locally, then merge into `main`.
 
+`main` is protected (**pull request required**, admins included; force-pushes and deletions refused), so a merge always goes through a PR:
+
 ```sh
 git switch develop
-# ...edit, commit...
-npm test
-git switch main && git merge --ff-only develop && git push origin main
+# ...edit, commit, test...
+git push origin develop
+gh pr create --base main --head develop     # then review and merge
+```
+
+Merges use **rebase** to keep history linear; afterwards realign develop onto main:
+
+```sh
+git switch develop && git fetch origin && git reset --hard origin/main
 ```
 
 ## Development
