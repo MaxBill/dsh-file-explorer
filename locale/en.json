@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "File Explorer",
-    "description": "Browse, filter and preview local files: a sidebar entry plus a main-column panel with icon/list views, details and preview, and a full context menu.",
-    "detail": "README.md"
+    "description": "Browse, filter and preview local files: a sidebar entry plus a main-column panel with icon/list views, details and preview, and a full context menu. Ships in Chinese and English.",
+    "detail": "README.en.md"
   }
 }

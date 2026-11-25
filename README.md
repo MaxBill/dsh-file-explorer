@@ -1,89 +1,100 @@
-# File Explorer · dsh-file-explorer
+# 文件管理器 · dsh-file-explorer
 
-A **文件管理器** entry in the DeepSeek Harness left sidebar that opens a full file browser in the main column: browse folders, filter, and preview text and images.
+**简体中文** | [English](README.en.md)
 
-| List view with the context menu | Icons view |
+给 DeepSeek Harness 左侧栏加一个 **文件管理器** 入口：点开就在主栏里浏览本机文件、筛选目录、预览文本与图片。
+
+| 列表视图与右键菜单 | 图标视图 |
 |:--|:--|
-| ![The 文件管理器 context menu](docs/context-menu.png) | ![Icons view](docs/views.png) |
+| ![文件管理器的右键菜单](docs/context-menu.png) | ![图标视图](docs/views.png) |
 
-![Details pane](docs/details.png)
+![详情面板](docs/details.png)
 
-![Quick toolbar](docs/toolbar.png)
+![快捷工具栏](docs/toolbar.png)
 
-![About window](docs/about.png)
+![关于窗口](docs/about.png)
 
-Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBill](https://github.com/MaxBill) · License: Apache-2.0
+仓库：<https://github.com/MaxBill/dsh-file-explorer> · 开发者：[MaxBill](https://github.com/MaxBill) · 许可：Apache-2.0
 
-## What it does
+## 功能
 
-- **Left sidebar entry** — registered in `sidebar.panellist` with a folder glyph; the same id addresses the panel registered in the `main` keyed slot.
-- **Plugin-page icon** — `package.json`'s `icon` points at `icon.svg` (the purple folder), which is what the installed-plugins list shows.
-- **Browsing** — breadcrumbs, up, home, refresh; double-click a folder to enter it.
-- **Navigation motion** — entering a folder slides the listing and its header in from the right; going up (↑, a parent breadcrumb, Backspace, home) slides them in from the left — 60 px of travel with a slight scale over 340 ms. 选项 → 切换动画 picks between **滑动** (the default), **淡入**, **缩放** (0.9 → 1), **上浮** (26 px from below) and **回弹** (a sliding entry with a little overshoot), and a master switch turns the whole thing off. In-place reloads (refresh, a rename) always just fade, the choice is remembered, and the animation is off when the system asks for reduced motion.
-- **Address bar** — the tinted breadcrumb strip doubles as a path field: double-click it (or press `⌘L`), type an absolute, relative or `~` path and press Enter. `Esc` cancels, and a path outside the home root is refused.
-- **Filter and sort** — live name filter; the list carries 名称 / 类型 / 大小 / 修改时间 column labels (the active one shows an arrow and any label can be clicked), and the toolbar's 排序 menu does the same, with folders always first.
-- **View modes** — the two icons at the far right of the toolbar switch **icons / list** (⌘1 icons, ⌘2 list, Ctrl on Windows). **Icons is the default**: the folder lays out as a grid. The list shows name, type, size and modified time in one row. The choice is remembered for the next session.
-- **Column widths** — hover the dividers between the list headers (名称 / 类型 / 大小 / 修改时间) to get a resize cursor, then drag: that column widens or narrows, and **double-clicking a divider restores its default width**. 名称 shares the leftover space until you drag it, then it becomes a fixed width. Widths persist in the browser, so the panel reopens exactly as you left it.
-- **Hidden files** — dotfiles are hidden by default; the 隐藏文件 button in the toolbar shows them.
-- **Status bar** — item count, selection size and clipboard on the left; the current view mode and sort key on the right.
-- **About** — 更多 → 关于 opens an About window with a tinted header (app icon, name, version pill) over three rows — author, version with build date, and the repository as a clickable link — plus a copyright line carrying the licence, all read from `package.json` so it cannot drift from the release.
-- **Preview** — text files up to 512 KB render as monospace text, images up to 8 MB render inline from a data URL, anything else shows its metadata. The preview icon at the far right of the toolbar collapses or restores the right-hand pane; collapsed, the list takes the full width.
-- **Details pane** — right-click "显示详情", or flip the right pane to 详情, to see name, type, size, location, created, modified and permissions. Folders have no preview, so selecting one shows its details (size reads as an item count).
-- **Quick toolbar** — **新建** (new folder / new file) first, then cut, copy, paste, rename and delete, then **排序** (name / size / modified) and **更多** (undo, select all, deselect all, invert selection, options, about) on the right. 选项 opens a settings window (not a submenu) with four sections: 显示 (hidden files switch), 视图 (图标 / 列表 segmented control), 右侧面板 (预览 / 详情 / 隐藏) and 切换动画 (a master switch plus the effect picker) — all of it mirrors the toolbar's own toggles. Everything there matches the toolbar's own icon group, so either can drive it. Buttons grey out when nothing is selected.
-- **Multi-select** — `⌘`-click to add or drop single rows, `⇧`-click to select a range; cut, copy and delete act on the whole selection.
-- **Undo** — delete, rename, move and create can all be undone (the last 20 steps), and the listing refreshes afterwards.
-- **Context menu** — right-click a file or folder, or the empty area, for the common operations (see below).
-- **Keyboard** — `↑`/`↓` to select, `Enter` to open, `Backspace` to go up, `F2` to rename, `⌘C`/`⌘X`/`⌘V` to copy, cut and paste, `Delete` to move to the Trash, `⌘1`/`⌘2` to switch views, `⌘A` to select all, `⌘⇧A` to deselect all, `⌘⌥A` to invert, `Esc` to clear, `⌘L` to edit the address bar.
-- **Remembers the folder** — switching to another panel and back keeps the last directory.
+- **左侧栏入口**：注册在 `sidebar.panellist`，图标为文件夹；同一 id 打开 `main` 面板。
+- **插件页图标**：`package.json` 的 `icon` 指向 `icon.svg`（紫色文件夹），插件列表里显示的就是它。
+- **切换动画**：双击文件夹进入下一层时内容（连同表头）从右侧滑入，点 ↑ / 面包屑返回上一层时从左侧滑入 —— 位移 60px、轻微缩放、340ms 缓出；刷新、重命名后这类原地刷新只做淡入，不滑动。系统开了「减弱动态效果」时动画自动关掉。
+- **目录浏览**：面包屑导航、上一级、回到主目录、刷新；双击文件夹进入。
+- **地址栏**：面包屑外面的浅色输入条，**双击**（或 `⌘L`）变成可编辑路径，回车跳转；支持绝对路径、相对路径、`~` 和 `..`，`Esc` 取消，越出主目录会被拒绝。
+- **筛选与排序**：按名称实时筛选；列表上方有 **名称 / 类型 / 大小 / 修改时间** 列头（当前排序列带箭头，点列头即可切换），也可以走工具栏的「排序」菜单，文件夹恒在前。
+- **显示视图**：工具栏最右侧两个图标切换 **图标 / 列表**（`⌘1` 图标、`⌘2` 列表，Windows 上是 `Ctrl`）。**图标视图是默认**，文件夹以图标网格铺开；列表视图一行给全 **名称 / 类型 / 大小 / 修改时间**。选择会记住，下次打开还是上次的视图。
 
-## Context menu
+  **列宽可拖拽**：把鼠标移到列表表头的列分隔线（名称 / 类型 / 大小 / 修改时间 之间）会变成横向双箭头，按住左右拖就能调整这一列；**双击分隔线恢复正常宽度**。名称列默认吃掉剩余空间，拖过之后变成固定像素。宽度存在浏览器里，重开面板还是你调好的样子。
+- **隐藏文件开关**：默认隐藏 `.dotfile`，工具栏「隐藏文件」一键显示。
+- **状态栏**：左侧是条目数、已选数量与总大小、剪贴板内容；右侧显示当前视图与排序方式，开启隐藏文件时也会提示。
+- **关于**：工具栏「更多 → 关于 文件管理器…」打开关于窗口：浅色页头放图标、名称与版本胶囊，下面三行是仓库地址、作者与版本（含构建日期），版权与许可署名在底部（信息直接读 `package.json`，不会和版本号脱节）。
+- **预览**：文本文件（≤ 512 KB）直接显示，图片（≤ 8 MB）以内联 data URL 显示，其余显示元信息。工具栏最右侧的预览图标可一键**收起 / 展开**右侧面板，收起后列表占满整宽。
+- **详情面板**：右键「显示详情」，或在右侧面板切到「详情」，查看 **名称 / 类型 / 大小 / 位置 / 创建时间 / 修改时间 / 权限**；文件夹没有预览，选中即自动显示详情（大小位置显示条目数）。
+- **快捷工具栏**：**新建**（文件夹 / 文件）、剪切、复制、粘贴、重命名、删除，然后是 **排序**（名称 / 大小 / 修改时间）与 **更多**（撤销、全部选择、全部取消、反向选择、选项、关于）。未选中条目时相关按钮自动置灰。
 
-**File or folder**: preview (open, for folders), open with the default app, reveal in Finder, rename…, duplicate, copy, cut, copy path, copy name, move to Trash.
+- **选项窗口**：**更多 → 选项** 打开一个设置窗口（不再是小弹层），里面分四段：**显示**（显示隐藏文件开关）、**视图**（图标 / 列表 分段控件）、**右侧面板**（预览 / 详情 / 隐藏）、**切换动画**（总开关 + 效果选择）。开关和分段控件与工具栏右侧的图标组等价，改哪边都同步。
 
-**Common documents also get**: **添加到会话** — images, text, PDF, Word, Excel and PowerPoint files can be handed straight to the current conversation (the same thing as dropping them on the composer; an attachment card appears there). The bytes come from the new `/api/file-explorer/raw` host route.
+![选项窗口](docs/options.png)
 
-**Folders also get**: **添加为工作区** — asks for confirmation first ("确认要将 xxx 添加为 DSH 工作区？"), then registers the folder through the client's `workspaces.create({ path })`, so it appears in the sidebar's 工作区 list right away; adding the same path twice reports the host's reason, and cancelling does nothing.
+- **多语言**：界面支持 **中文 / English**，在 **选项 → 语言** 里切换（默认「自动」，跟随系统语言），选择记在浏览器里。中文是默认语言，也是 README 的默认版本。
 
-**Empty area**: new folder…, new file…, paste, reveal this folder, refresh.
+- **切换动画效果**：默认「滑动」，另有 **淡入**（纯透明度）、**缩放**（0.9 → 1）、**上浮**（从下往上 26px）、**回弹**（带一点过冲的滑入）。拖动列表列宽、刷新这类原地重载始终只有淡入；关掉开关则完全不播动画。选择存在浏览器里，下次打开还是上次的效果。
+- **多选**：`⌘` 点按逐个增减，`⇧` 点按选一段；批量剪切 / 复制 / 删除都按整个选区执行。
+- **撤销**：删除、重命名、移动、新建都能撤销（保留最近 20 步），撤销后自动刷新列表。
+- **右键菜单**：文件和文件夹右键、空白处右键，各有常用操作（见下）。
+- **键盘**：`↑`/`↓` 选择，`Enter` 打开，`Backspace` 上一级，`F2` 重命名，`⌘C`/`⌘X`/`⌘V` 拷贝剪切粘贴，`Delete` 移到废纸篓，`⌘1`/`⌘2` 切换视图，`⌘A` 全选、`⌘⇧A` 全部取消、`⌘⌥A` 反向选择、`Esc` 清空选择，`⌘L` 编辑地址栏。
+- **记忆位置**：切换面板（例如回到对话）后再点回来，仍停在刚才的目录。
 
-- Copy and cut put the path on the panel's own clipboard; pasting in another folder copies or moves it, and the footer shows what is on the clipboard.
-- Move to Trash asks first, then moves the item into `~/.Trash`, so it stays recoverable.
-- No write operation overwrites: a name clash becomes `name 2` / `name 副本` (or a `409` for a rename onto an existing name).
-- Rename and create use in-panel dialogs: `Enter` confirms, `Esc` cancels, and rename preselects the name without its extension.
+## 右键菜单
 
-## Safety
+**文件 / 文件夹**：预览（文件夹为「打开」）、用默认应用打开、在访达中显示、重新命名…、复制副本、拷贝、剪切、复制路径、复制名称、移到废纸篓。
 
-Every requested path is resolved with `realpath()` before the containment check, so neither `..` segments nor symbolic links escape the browsing root. The root is the current user's home directory, and out-of-root requests answer `403`.
+**常见文档额外一项**：**添加到会话** —— 图片、文本、PDF、Word、Excel、PPT 可以直接加进当前对话（等同把文件拖进输入框，输入框里会出现附件卡片），靠宿主新增的 `/api/file-explorer/raw` 取回原始字节。
 
-Limits: 512 KB of text, 8 MB of image, 2000 entries per directory (the footer says when a listing is truncated).
+**文件夹额外一项**：**添加为工作区** —— 先弹确认框（「确认要将 xxx 添加为 DSH 工作区？」），确认后调用客户端 `workspaces.create({ path })`，左侧栏「工作区」里立刻多一个入口；同一路径重复添加会提示宿主返回的原因，取消则什么都不做。
 
-## Layout
+**空白处**：新建文件夹…、新建文件…、粘贴、在访达中显示当前文件夹、刷新。
 
-| File | Role |
+- 「拷贝 / 剪切」把路径放进面板内的剪贴板，切到别的目录「粘贴」即可复制或移动；底部栏会显示当前剪贴板内容。
+- 「移到废纸篓」会先弹确认框，对象进系统废纸篓（`~/.Trash`），可以从废纸篓找回，不会直接删除。
+- 所有写入操作都不覆盖已有项：同名冲突时自动改成 `名称 2`、`名称 副本`，或返回 `409`。
+- 重命名 / 新建用面板内的对话框，`Enter` 确认、`Esc` 取消；重命名会预选中不含扩展名的部分。
+
+## 安全边界
+
+所有路径都先 `realpath()` 再校验，因此 `..` 与符号链接都无法逃出浏览根目录；根目录固定为当前用户主目录。越界请求返回 `403`。
+
+预览上限：文本 512 KB，图片 8 MB；单目录最多列出 2000 项（超出时页脚提示已截断）。
+
+## 结构
+
+| 文件 | 作用 |
 |:--|:--|
-| `lib/index.js` | Host half: registers the `/api/file-explorer` prefix route on the DSH web server (`roots`, `list`, `read`, `reveal`) |
-| `lib/client.js` | Browser half: a `window.__ModuleLoader__` factory module registering the sidebar icon and the `main` panel |
-| `cordis.patch.yml` | Bundle patch that inserts the `dsh-file-explorer` Loader entry (the row id matches the package name) |
+| `lib/index.js` | Host 端：在 DSH Web Server 上注册 `/api/file-explorer` 前缀路由（`roots` / `list` / `read` / `reveal`） |
+| `lib/client.js` | 浏览器端：`window.__ModuleLoader__` 工厂模块，注册左侧栏图标与 `main` 面板 |
+| `cordis.patch.yml` | Bundle patch，把 `dsh-file-explorer` 条目插入 Loader（条目 id 与包名一致） |
 
-Icons are inline SVG: `SHAPES` accepts either a 24-grid stroke path list or `{ viewBox, parts: [{ d, fill }] }` filled artwork. The listing uses **eleven two-tone icons**: folder, text, PDF, Word, Excel, PowerPoint, archive, image, audio, video, and a neutral "other file" for everything else. Each `viewBox` was recomputed from its artwork's bounding box so every long edge is 88% of the box, which keeps them the same visual size at 44px in the grid and 16px in a row.
+图标是内联 SVG：`SHAPES` 既接受 24 网格的描边路径数组，也接受 `{ viewBox, parts: [{ d, fill }] }` 形式的填充图形。文件区按类型用 **11 套双色图标**：文件夹、文本、PDF、Word、Excel、PPT、压缩包、图片、音频、视频，以及给其余类型兜底的「其他文件」。
 
-## Icon assets
+## 图标资源
 
-`assets/icons/` ships the twelve SVGs as standalone files: folder, text, PDF, Word, Excel, PowerPoint, archive, image, audio, video, the neutral "other file", and the stroke fallback.
+`assets/icons/` 里有 12 个可直接取用的 SVG：文件夹、文本、PDF、Word、Excel、PPT、压缩包、图片、音频、视频、其他文件，以及线性兜底图标。
 
-![Icon assets](docs/icons.png)
+![图标资源](docs/icons.png)
 
-They are exported from the very same `SHAPES` table the bundle renders, so they never drift from what the UI shows:
+这些文件是从 `lib/client.js` 的 `SHAPES` 导出的同一份数据，不会和界面上的图标走样：
 
 ```bash
-node scripts/export-icons.mjs   # re-run after touching the artwork
+node scripts/export-icons.mjs   # 改完图标重跑，assets/icons/ 随之更新
 ```
 
-The browser half keeps the artwork inline for zero extra requests; `assets/icons/` is the browsable, reusable copy.
+浏览器端为了零请求把图形内联在 bundle 里，`assets/icons/` 是给人看、给别的项目复用的副本。。每套图形的 `viewBox` 都按内容包围盒重算，长边统一占盒子 88%，所以 44px 网格与 16px 列表里视觉大小一致。
 
-## Install
+## 安装
 
-The plugin mounts the standard DSH bundle way:
+插件按 DSH 的标准 bundle 方式挂载：
 
 ```jsonc
 // ~/.dsh/profiles/<profile>/package.json
@@ -93,39 +104,39 @@ The plugin mounts the standard DSH bundle way:
 }
 ```
 
-Then run `pnpm install` in that profile directory and restart DSH. `dsh plugin --profile <profile> add <path>` does the same through the CLI.
+然后在该 profile 目录执行 `pnpm install`，重启 DSH。也可以用 `dsh plugin --profile <profile> add <路径>`。
 
-Installing from source:
+从源码安装：
 
 ```sh
 git clone https://github.com/MaxBill/dsh-file-explorer.git ~/.dsh/plugins/dsh-file-explorer
 ```
 
-Then point the `link:` dependency above at that directory.
+再把上面的 `link:` 依赖指向该目录即可。
 
-## Development
+## 开发
 
 ```sh
-npm test        # exercises the host HTTP API in a scratch folder under $HOME, then cleans up
+npm test        # 跑 host 端 HTTP 接口测试（在 $HOME 下的临时目录里做，结束后清理）
 ```
 
-There is no build step: `lib/index.js` is plain ESM and `lib/client.js` is a hand-written `window.__ModuleLoader__` factory module.
+插件没有构建步骤：`lib/index.js` 是普通的 ESM，`lib/client.js` 是手写的 `window.__ModuleLoader__` 工厂模块。
 
-## Uninstall
+## 卸载
 
-Remove `dsh-file-explorer` from `dsh.profile.bundles` and `dependencies`, then run `pnpm install` again.
+从 `dsh.profile.bundles` 与 `dependencies` 中删掉 `dsh-file-explorer`，再跑一次 `pnpm install`。
 
-## Developer
+## 开发者
 
-| Field | Value |
+| 项目 | 信息 |
 |:--|:--|
-| Developer | **MaxBill** |
-| Homepage | <https://github.com/MaxBill> |
-| Repository | <https://github.com/MaxBill/dsh-file-explorer> |
-| Issues | <https://github.com/MaxBill/dsh-file-explorer/issues> |
+| 开发者 | **MaxBill** |
+| 开发者首页 | <https://github.com/MaxBill> |
+| 项目仓库 | <https://github.com/MaxBill/dsh-file-explorer> |
+| 问题反馈 | <https://github.com/MaxBill/dsh-file-explorer/issues> |
 
-## License
+## 许可
 
 [Apache License 2.0](LICENSE) © 2026 MaxBill
 
-Commercial use, modification and redistribution are permitted with the copyright and licence notices retained and any NOTICE file passed on (section 4); it also grants an express patent licence and comes with no warranty.
+允许商用、修改、再分发，需保留版权与许可声明，并按第 4 条附上 NOTICE（若有）；同时提供明确的专利授权，且不提供任何担保。
