@@ -59,7 +59,21 @@
 | `lib/client.js` | 浏览器端：`window.__ModuleLoader__` 工厂模块，注册左侧栏图标与 `main` 面板 |
 | `cordis.patch.yml` | Bundle patch，把 `dsh-file-explorer` 条目插入 Loader（条目 id 与包名一致） |
 
-图标是内联 SVG：`SHAPES` 既接受 24 网格的描边路径数组，也接受 `{ viewBox, parts: [{ d, fill }] }` 形式的填充图形。文件区按类型用 **11 套双色图标**：文件夹、文本、PDF、Word、Excel、PPT、压缩包、图片、音频、视频，以及给其余类型兜底的「其他文件」。每套图形的 `viewBox` 都按内容包围盒重算，长边统一占盒子 88%，所以 44px 网格与 16px 列表里视觉大小一致。
+图标是内联 SVG：`SHAPES` 既接受 24 网格的描边路径数组，也接受 `{ viewBox, parts: [{ d, fill }] }` 形式的填充图形。文件区按类型用 **11 套双色图标**：文件夹、文本、PDF、Word、Excel、PPT、压缩包、图片、音频、视频，以及给其余类型兜底的「其他文件」。
+
+## 图标资源
+
+`assets/icons/` 里有 12 个可直接取用的 SVG：文件夹、文本、PDF、Word、Excel、PPT、压缩包、图片、音频、视频、其他文件，以及线性兜底图标。
+
+![图标资源](docs/icons.png)
+
+这些文件是从 `lib/client.js` 的 `SHAPES` 导出的同一份数据，不会和界面上的图标走样：
+
+```bash
+node scripts/export-icons.mjs   # 改完图标重跑，assets/icons/ 随之更新
+```
+
+浏览器端为了零请求把图形内联在 bundle 里，`assets/icons/` 是给人看、给别的项目复用的副本。。每套图形的 `viewBox` 都按内容包围盒重算，长边统一占盒子 88%，所以 44px 网格与 16px 列表里视觉大小一致。
 
 ## 安装
 

@@ -61,6 +61,20 @@ Limits: 512 KB of text, 8 MB of image, 2000 entries per directory (the footer sa
 
 Icons are inline SVG: `SHAPES` accepts either a 24-grid stroke path list or `{ viewBox, parts: [{ d, fill }] }` filled artwork. The listing uses **eleven two-tone icons**: folder, text, PDF, Word, Excel, PowerPoint, archive, image, audio, video, and a neutral "other file" for everything else. Each `viewBox` was recomputed from its artwork's bounding box so every long edge is 88% of the box, which keeps them the same visual size at 44px in the grid and 16px in a row.
 
+## Icon assets
+
+`assets/icons/` ships the twelve SVGs as standalone files: folder, text, PDF, Word, Excel, PowerPoint, archive, image, audio, video, the neutral "other file", and the stroke fallback.
+
+![Icon assets](docs/icons.png)
+
+They are exported from the very same `SHAPES` table the bundle renders, so they never drift from what the UI shows:
+
+```bash
+node scripts/export-icons.mjs   # re-run after touching the artwork
+```
+
+The browser half keeps the artwork inline for zero extra requests; `assets/icons/` is the browsable, reusable copy.
+
 ## Install
 
 The plugin mounts the standard DSH bundle way:
