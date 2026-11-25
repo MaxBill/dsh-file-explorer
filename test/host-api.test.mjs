@@ -91,6 +91,8 @@ try {
   check('raw refuses a folder', r.status === 400, r.body)
   r = await call('GET', '/sheet', { path: join(SCRATCH, 'seed.txt') })
   check('sheet refuses a file that is not a workbook', r.status === 415, r.body)
+  r = await call('GET', '/document', { path: join(SCRATCH, 'seed.txt') })
+  check('document refuses a file that is not a Word document', r.status === 415, r.body)
 
   r = await call('POST', '/newfile', { path: join(SCRATCH, 'a'), name: 'one.txt' })
   check('creates a file', r.status === 200, r.body)
