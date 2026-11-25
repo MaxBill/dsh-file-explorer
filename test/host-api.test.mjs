@@ -78,6 +78,10 @@ try {
   check('lists a directory', r.status === 200 && r.body.entries.length === 3, r.body.entries?.map(e => e.name))
   r = await call('GET', '/read', { path: join(SCRATCH, 'seed.txt') })
   check('reads a text file', r.status === 200 && r.body.kind === 'text' && r.body.text === 'seed')
+  r = await call('GET', '/stat', { path: join(SCRATCH, 'seed.txt') })
+  check('details for a file', r.status === 200 && r.body.dir === false && r.body.name === 'seed.txt' && typeof r.body.mode === 'string', r.body)
+  r = await call('GET', '/stat', { path: join(SCRATCH, 'a') })
+  check('details for a folder', r.status === 200 && r.body.dir === true && r.body.items === 0, r.body)
 
   r = await call('POST', '/newfile', { path: join(SCRATCH, 'a'), name: 'one.txt' })
   check('creates a file', r.status === 200, r.body)

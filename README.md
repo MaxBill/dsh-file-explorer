@@ -6,6 +6,8 @@ A **文件管理器** entry in the DeepSeek Harness left sidebar that opens a fu
 |:--|:--|
 | ![The 文件管理器 context menu](docs/context-menu.png) | ![Icons view](docs/views.png) |
 
+![Details pane](docs/details.png)
+
 Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBill](https://github.com/MaxBill) · License: MIT
 
 ## What it does
@@ -16,6 +18,7 @@ Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBil
 - **View modes** — switch between **list** and **icons** from the toolbar (⌘1 / ⌘2, Ctrl on Windows). The list shows name, type, size and modified time in one row; icons lays the folder out as a grid with the sort bar kept on top. The choice is remembered for the next session.
 - **Hidden files** — dotfiles are hidden by default and shown with one toggle.
 - **Preview** — text files up to 512 KB render as monospace text, images up to 8 MB render inline from a data URL, anything else shows its metadata.
+- **Details pane** — right-click "显示详情", or flip the right pane to 详情, to see name, type, size, location, created, modified and permissions. Folders have no preview, so selecting one shows its details (size reads as an item count).
 - **Context menu** — right-click a file or folder, or the empty area, for the common operations (see below).
 - **Keyboard** — `↑`/`↓` to select, `Enter` to open, `Backspace` to go up, `F2` to rename, `⌘C`/`⌘X`/`⌘V` to copy, cut and paste, `Delete` to move to the Trash, `⌘1`/`⌘2` to switch views.
 - **Remembers the folder** — switching to another panel and back keeps the last directory.
