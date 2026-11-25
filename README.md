@@ -17,8 +17,8 @@ Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBil
 - **Left sidebar entry** — registered in `sidebar.panellist` with a folder glyph; the same id addresses the panel registered in the `main` keyed slot.
 - **Browsing** — breadcrumbs, up, home, refresh; double-click a folder to enter it.
 - **Address bar** — the tinted breadcrumb strip doubles as a path field: double-click it (or press `⌘L`), type an absolute, relative or `~` path and press Enter. `Esc` cancels, and a path outside the home root is refused.
-- **Filter and sort** — live name filter; click a column header to sort by name, size, or modified time, with folders always first.
-- **View modes** — switch between **list** and **icons** from the toolbar (⌘1 / ⌘2, Ctrl on Windows). The list shows name, type, size and modified time in one row; icons lays the folder out as a grid with the sort bar kept on top. The choice is remembered for the next session.
+- **Filter and sort** — live name filter; the toolbar's 排序 menu sorts by name, size or modified time, with folders always first.
+- **View modes** — switch between **list** and **icons** from the toolbar (⌘1 / ⌘2, Ctrl on Windows). The list shows name, type, size and modified time in one row; icons lays the folder out as a grid. The choice is remembered for the next session.
 - **Hidden files** — dotfiles are hidden by default and shown with one toggle.
 - **Preview** — text files up to 512 KB render as monospace text, images up to 8 MB render inline from a data URL, anything else shows its metadata.
 - **Details pane** — right-click "显示详情", or flip the right pane to 详情, to see name, type, size, location, created, modified and permissions. Folders have no preview, so selecting one shows its details (size reads as an item count).
