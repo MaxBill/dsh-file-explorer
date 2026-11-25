@@ -4,7 +4,7 @@
 
 ![文件管理器的右键菜单](docs/context-menu.png)
 
-仓库：<https://github.com/MaxBill/dsh-file-explorer> · 许可：MIT
+仓库：<https://github.com/MaxBill/dsh-file-explorer> · 开发者：[MaxBill](https://github.com/MaxBill) · 许可：MIT
 
 ## 功能
 
@@ -75,6 +75,15 @@ npm test        # 跑 host 端 HTTP 接口测试（在 $HOME 下的临时目录�
 ## 卸载
 
 从 `dsh.profile.bundles` 与 `dependencies` 中删掉 `dsh-file-explorer`，再跑一次 `pnpm install`。
+
+## 开发者
+
+| 项目 | 信息 |
+|:--|:--|
+| 开发者 | **MaxBill** |
+| 开发者首页 | <https://github.com/MaxBill> |
+| 项目仓库 | <https://github.com/MaxBill/dsh-file-explorer> |
+| 问题反馈 | <https://github.com/MaxBill/dsh-file-explorer/issues> |
 
 ## 许可
 

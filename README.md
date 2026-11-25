@@ -4,7 +4,7 @@ A **文件管理器** entry in the DeepSeek Harness left sidebar that opens a fu
 
 ![The 文件管理器 context menu](docs/context-menu.png)
 
-Repository: <https://github.com/MaxBill/dsh-file-explorer> · License: MIT
+Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBill](https://github.com/MaxBill) · License: MIT
 
 ## What it does
 
@@ -75,6 +75,15 @@ There is no build step: `lib/index.js` is plain ESM and `lib/client.js` is a han
 ## Uninstall
 
 Remove `dsh-file-explorer` from `dsh.profile.bundles` and `dependencies`, then run `pnpm install` again.
+
+## Developer
+
+| Field | Value |
+|:--|:--|
+| Developer | **MaxBill** |
+| Homepage | <https://github.com/MaxBill> |
+| Repository | <https://github.com/MaxBill/dsh-file-explorer> |
+| Issues | <https://github.com/MaxBill/dsh-file-explorer/issues> |
 
 ## License
 

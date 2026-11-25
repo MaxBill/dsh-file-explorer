@@ -25,6 +25,10 @@
     "file-manager",
     "文件管理器"
   ],
+  "author": {
+    "name": "MaxBill",
+    "url": "https://github.com/MaxBill"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MaxBill/dsh-file-explorer.git"
