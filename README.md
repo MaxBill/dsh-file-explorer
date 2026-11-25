@@ -182,6 +182,18 @@ dsh plugin --profile desktop add @maxbill/dsh-file-explorer
 
 > 注意：Loader 里的**条目 id 仍是 `dsh-file-explorer`**（`cordis.patch.yml` 的 `id:`），只是加载的**模块名**换成了 scoped 包名。
 
+## 分支模型
+
+- `main`：稳定分支，只在验证通过后从 `develop` 合并进来。
+- `develop`：日常开发都在这里提交，跑完测试、确认没问题再合进 `main`。
+
+```sh
+git switch develop
+# ...改代码、提交...
+npm test && node /tmp/test-preview.mjs   # 本地验证
+git switch main && git merge --ff-only develop && git push origin main
+```
+
 ## 开发
 
 ```sh
