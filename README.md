@@ -133,7 +133,7 @@
 |:--|:--|
 | `lib/index.js` | Host 端：在 DSH Web Server 上注册 `/api/file-explorer` 前缀路由（`roots` / `list` / `read` / `reveal`） |
 | `lib/client.js` | 浏览器端：`window.__ModuleLoader__` 工厂模块，注册左侧栏图标与 `main` 面板 |
-| `cordis.patch.yml` | Bundle patch，把 `dsh-file-explorer` 条目插入 Loader（条目 id 与包名一致） |
+| `cordis.patch.yml` | Bundle patch，把 Loader 条目 `dsh-file-explorer` 插入、加载包 `@maxbill/dsh-file-explorer` |
 
 图标是内联 SVG：`SHAPES` 既接受 24 网格的描边路径数组，也接受 `{ viewBox, parts: [{ d, fill }] }` 形式的填充图形。文件区按类型用 **11 套双色图标**：文件夹、文本、PDF、Word、Excel、PPT、压缩包、图片、音频、视频，以及给其余类型兜底的「其他文件」。
 
@@ -153,25 +153,34 @@ node scripts/export-icons.mjs   # 改完图标重跑，assets/icons/ 随之更�
 
 ## 安装
 
-插件按 DSH 的标准 bundle 方式挂载：
+插件包名是 **`@maxbill/dsh-file-explorer`**（npm 上 `dsh-file-explorer` 已被他人占用，所以走 scope）。三种装法任选：
+
+**① 从 GitHub（免 npm）**
+
+```sh
+git clone https://github.com/MaxBill/dsh-file-explorer.git ~/.dsh/plugins/dsh-file-explorer
+dsh plugin --profile desktop add link:$HOME/.dsh/plugins/dsh-file-explorer
+```
+
+**② 从 npm（发布后可用）**
+
+```sh
+dsh plugin --profile desktop add @maxbill/dsh-file-explorer
+```
+
+**③ 手动写进 profile**（等价于上面两条，便于理解）
 
 ```jsonc
 // ~/.dsh/profiles/<profile>/package.json
 {
-  "dependencies": { "dsh-file-explorer": "link:../../plugins/dsh-file-explorer" },
-  "dsh": { "profile": { "bundles": [ "dsh-file-explorer" ] } }
+  "dependencies": { "@maxbill/dsh-file-explorer": "link:../../plugins/dsh-file-explorer" },
+  "dsh": { "profile": { "bundles": [ "@maxbill/dsh-file-explorer" ] } }
 }
 ```
 
-然后在该 profile 目录执行 `pnpm install`，重启 DSH。也可以用 `dsh plugin --profile <profile> add <路径>`。
+然后在该 profile 目录执行 `pnpm install`，重启 DSH。
 
-从源码安装：
-
-```sh
-git clone https://github.com/MaxBill/dsh-file-explorer.git ~/.dsh/plugins/dsh-file-explorer
-```
-
-再把上面的 `link:` 依赖指向该目录即可。
+> 注意：Loader 里的**条目 id 仍是 `dsh-file-explorer`**（`cordis.patch.yml` 的 `id:`），只是加载的**模块名**换成了 scoped 包名。
 
 ## 开发
 
@@ -183,7 +192,7 @@ npm test        # 跑 host 端 HTTP 接口测试（在 $HOME 下的临时目录�
 
 ## 卸载
 
-从 `dsh.profile.bundles` 与 `dependencies` 中删掉 `dsh-file-explorer`，再跑一次 `pnpm install`。
+从 `dsh.profile.bundles` 与 `dependencies` 中删掉 `@maxbill/dsh-file-explorer`，再跑一次 `pnpm install`。
 
 ## 开发者
 

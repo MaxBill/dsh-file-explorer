@@ -79,7 +79,7 @@ try {
   r = await call('GET', '/read', { path: join(SCRATCH, 'seed.txt') })
   check('reads a text file', r.status === 200 && r.body.kind === 'text' && r.body.text === 'seed')
   r = await call('GET', '/meta')
-  check('meta reports the manifest', r.status === 200 && r.body.name === 'dsh-file-explorer' && /^\d+\.\d+\.\d+$/.test(r.body.version) && r.body.author && r.body.author.name === 'MaxBill', r.body)
+  check('meta reports the manifest', r.status === 200 && r.body.name === '@maxbill/dsh-file-explorer' && /^\d+\.\d+\.\d+$/.test(r.body.version) && r.body.author && r.body.author.name === 'MaxBill', r.body)
   r = await call('GET', '/stat', { path: join(SCRATCH, 'seed.txt') })
   check('details for a file', r.status === 200 && r.body.dir === false && r.body.name === 'seed.txt' && typeof r.body.mode === 'string', r.body)
   r = await call('GET', '/stat', { path: join(SCRATCH, 'a') })

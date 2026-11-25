@@ -4,4 +4,4 @@
 # package.json -> dsh.profile.bundles.
 - insert:
     - id: dsh-file-explorer
-      name: dsh-file-explorer
+      name: "@maxbill/dsh-file-explorer"

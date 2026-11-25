@@ -125,7 +125,7 @@ Limits: 512 KB of text, 8 MB of image, 2000 entries per directory (the footer sa
 |:--|:--|
 | `lib/index.js` | Host half: registers the `/api/file-explorer` prefix route on the DSH web server (`roots`, `list`, `read`, `reveal`) |
 | `lib/client.js` | Browser half: a `window.__ModuleLoader__` factory module registering the sidebar icon and the `main` panel |
-| `cordis.patch.yml` | Bundle patch that inserts the `dsh-file-explorer` Loader entry (the row id matches the package name) |
+| `cordis.patch.yml` | Bundle patch: inserts the `dsh-file-explorer` Loader entry, which loads `@maxbill/dsh-file-explorer` |
 
 Icons are inline SVG: `SHAPES` accepts either a 24-grid stroke path list or `{ viewBox, parts: [{ d, fill }] }` filled artwork. The listing uses **eleven two-tone icons**: folder, text, PDF, Word, Excel, PowerPoint, archive, image, audio, video, and a neutral "other file" for everything else. Each `viewBox` was recomputed from its artwork's bounding box so every long edge is 88% of the box, which keeps them the same visual size at 44px in the grid and 16px in a row.
 
@@ -145,25 +145,34 @@ The browser half keeps the artwork inline for zero extra requests; `assets/icons
 
 ## Install
 
-The plugin mounts the standard DSH bundle way:
+The package is published as **`@maxbill/dsh-file-explorer`** — the bare name `dsh-file-explorer` is taken by another author on npm, hence the scope. Pick whichever install fits:
+
+**① From GitHub (no npm needed)**
+
+```sh
+git clone https://github.com/MaxBill/dsh-file-explorer.git ~/.dsh/plugins/dsh-file-explorer
+dsh plugin --profile desktop add link:$HOME/.dsh/plugins/dsh-file-explorer
+```
+
+**② From npm (once published)**
+
+```sh
+dsh plugin --profile desktop add @maxbill/dsh-file-explorer
+```
+
+**③ Write it into the profile by hand** (same thing, shown for clarity)
 
 ```jsonc
 // ~/.dsh/profiles/<profile>/package.json
 {
-  "dependencies": { "dsh-file-explorer": "link:../../plugins/dsh-file-explorer" },
-  "dsh": { "profile": { "bundles": [ "dsh-file-explorer" ] } }
+  "dependencies": { "@maxbill/dsh-file-explorer": "link:../../plugins/dsh-file-explorer" },
+  "dsh": { "profile": { "bundles": [ "@maxbill/dsh-file-explorer" ] } }
 }
 ```
 
-Then run `pnpm install` in that profile directory and restart DSH. `dsh plugin --profile <profile> add <path>` does the same through the CLI.
+Then run `pnpm install` in that profile directory and restart DSH.
 
-Installing from source:
-
-```sh
-git clone https://github.com/MaxBill/dsh-file-explorer.git ~/.dsh/plugins/dsh-file-explorer
-```
-
-Then point the `link:` dependency above at that directory.
+> The Loader entry id stays `dsh-file-explorer` (`id:` in `cordis.patch.yml`); only the module it loads carries the scoped package name.
 
 ## Development
 
@@ -175,7 +184,7 @@ There is no build step: `lib/index.js` is plain ESM and `lib/client.js` is a han
 
 ## Uninstall
 
-Remove `dsh-file-explorer` from `dsh.profile.bundles` and `dependencies`, then run `pnpm install` again.
+Remove `@maxbill/dsh-file-explorer` from `dsh.profile.bundles` and `dependencies`, then run `pnpm install` again.
 
 ## Developer
 
