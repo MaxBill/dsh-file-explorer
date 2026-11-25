@@ -105,6 +105,7 @@ try {
 
   r = await call('POST', '/transfer', {}, { sources: [join(SCRATCH, 'a', 'renamed.txt')], target: join(SCRATCH, 'b'), mode: 'copy' })
   check('copies into another folder', r.status === 200 && r.body.results[0].path === join(SCRATCH, 'b', 'renamed.txt'), r.body)
+  check('transfer reports the source for undo', r.body.results[0].from === join(SCRATCH, 'a', 'renamed.txt'), r.body.results[0])
   r = await call('POST', '/transfer', {}, { sources: [join(SCRATCH, 'b', 'renamed.txt')], target: join(SCRATCH, 'a'), mode: 'move' })
   check('a move that clashes auto-renames', r.status === 200 && r.body.results[0].path !== join(SCRATCH, 'a', 'renamed.txt'), r.body)
   r = await call('POST', '/transfer', {}, { sources: [join(SCRATCH, 'a')], target: join(SCRATCH, 'a'), mode: 'move' })
@@ -114,6 +115,7 @@ try {
 
   r = await call('POST', '/trash', { path: join(SCRATCH, 'a', 'renamed 副本.txt') })
   check('moves an item into the Trash', r.status === 200 && String(r.body.path).includes('.Trash'), r.body)
+  check('trash reports the source for undo', r.body.from === join(SCRATCH, 'a', 'renamed 副本.txt'), r.body.from)
 
   r = await call('POST', '/mkdir', { path: '/etc', name: 'nope' })
   check('refuses writes outside the root (403)', r.status === 403, r.body.message)
