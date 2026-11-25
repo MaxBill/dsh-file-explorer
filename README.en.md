@@ -174,6 +174,18 @@ Then run `pnpm install` in that profile directory and restart DSH.
 
 > The Loader entry id stays `dsh-file-explorer` (`id:` in `cordis.patch.yml`); only the module it loads carries the scoped package name.
 
+## Branch model
+
+- `main` — stable; only receives merges from `develop` once a change has been verified.
+- `develop` — day-to-day work lands here first: test locally, then merge into `main`.
+
+```sh
+git switch develop
+# ...edit, commit...
+npm test
+git switch main && git merge --ff-only develop && git push origin main
+```
+
 ## Development
 
 ```sh
