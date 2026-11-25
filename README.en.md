@@ -66,7 +66,22 @@ For when you would rather not put the bytes into the context: right-click → **
 - **Hidden files** — dotfiles are hidden by default; the 隐藏文件 button in the toolbar shows them.
 - **Status bar** — item count, selection size and clipboard on the left; the current view mode and sort key on the right.
 - **About** — 更多 → 关于 opens an About window with a tinted header (app icon, name, version pill) over three rows — author, version with build date, and the repository as a clickable link — plus a copyright line carrying the licence, all read from `package.json` so it cannot drift from the release.
-- **Preview** — text files up to 512 KB render as monospace text, images up to 8 MB render inline from a data URL, anything else shows its metadata. The pane **starts collapsed** — the panel opens in the icons view with no right pane, so the listing uses the full width. The preview icon at the far right of the toolbar collapses or restores the right-hand pane; collapsed, the list takes the full width.
+- **Preview** — the right pane routes by extension, covering the same ground as DSH's own document preview, and streams from the host's `/api/file-explorer/raw` instead of base64 data URLs:
+
+  | Type | Extensions | Renderer |
+  |:--|:--|:--|
+  | Images | png / jpg / jpeg / gif / webp / bmp / ico / svg | `<img>` straight from `/raw`, no size cap from base64 |
+  | PDF | pdf | `<embed type="application/pdf">` (the browser's reader: paging and zoom) plus an "open in a new window" link |
+  | Markdown | md / markdown | Built-in lightweight renderer: headings, bold/italic, inline code, links, lists, quotes, fenced code |
+  | Tables | csv / tsv | Parsed into a table (first row is the header, quoted commas supported), up to 200 rows |
+  | HTML | html / htm | Sandboxed iframe (`sandbox`, scripts do not run) |
+  | Audio / video | mp3 / wav / m4a / flac / ogg / opus / aiff; mp4 / mov / webm / ogv | Native `<audio>` / `<video>` players — DSH itself does not preview these |
+  | Text / code | the rest of the text kinds | Monospace, up to 512 KB |
+  | Everything else | binaries, Office | Metadata plus "Open with default app" | The pane **starts collapsed** — the panel opens in the icons view with no right pane, so the listing uses the full width. The preview icon at the far right of the toolbar collapses or restores the right-hand pane; collapsed, the list takes the full width.
+![Markdown preview](docs/preview-markdown.png)
+
+![PDF preview](docs/preview-pdf.png)
+
 - **Details pane** — right-click "显示详情", or flip the right pane to 详情, to see name, type, size, location, created, modified and permissions. Folders have no preview, so selecting one shows its details (size reads as an item count).
 - **Quick toolbar** — **新建** (new folder / new file) first, then cut, copy, paste, rename and delete, then **排序** (name / size / modified) and **更多** (undo, select all, deselect all, invert selection, options, about) on the right. 选项 opens a settings window (not a submenu) with four sections: 显示 (hidden files switch), 视图 (图标 / 列表 segmented control), 右侧面板 (隐藏 / 预览 / 详情, with 隐藏 as the default) and 切换动画 (a master switch plus the effect picker) — all of it mirrors the toolbar's own toggles. Everything there matches the toolbar's own icon group, so either can drive it, and **every setting is remembered** — hidden files, view, the right pane's visibility and mode, language and the transition effect all live in the browser, so closing the panel or reloading the page keeps them. A small sample strip under the effect pills replays the chosen animation as soon as you pick it. Buttons grey out when nothing is selected.
 - **Multi-select** — `⌘`-click to add or drop single rows, `⇧`-click to select a range; cut, copy and delete act on the whole selection.
