@@ -12,7 +12,7 @@
 
 ![关于窗口](docs/about.png)
 
-仓库：<https://github.com/MaxBill/dsh-file-explorer> · 开发者：[MaxBill](https://github.com/MaxBill) · 许可：MIT
+仓库：<https://github.com/MaxBill/dsh-file-explorer> · 开发者：[MaxBill](https://github.com/MaxBill) · 许可：Apache-2.0
 
 ## 功能
 
@@ -120,4 +120,6 @@ npm test        # 跑 host 端 HTTP 接口测试（在 $HOME 下的临时目录�
 
 ## 许可
 
-MIT
+[Apache License 2.0](LICENSE) © 2026 MaxBill
+
+允许商用、修改、再分发，需保留版权与许可声明，并按第 4 条附上 NOTICE（若有）；同时提供明确的专利授权，且不提供任何担保。

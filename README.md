@@ -12,7 +12,7 @@ A **文件管理器** entry in the DeepSeek Harness left sidebar that opens a fu
 
 ![About window](docs/about.png)
 
-Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBill](https://github.com/MaxBill) · License: MIT
+Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBill](https://github.com/MaxBill) · License: Apache-2.0
 
 ## What it does
 
@@ -120,4 +120,6 @@ Remove `dsh-file-explorer` from `dsh.profile.bundles` and `dependencies`, then r
 
 ## License
 
-MIT
+[Apache License 2.0](LICENSE) © 2026 MaxBill
+
+Commercial use, modification and redistribution are permitted with the copyright and licence notices retained and any NOTICE file passed on (section 4); it also grants an express patent licence and comes with no warranty.
