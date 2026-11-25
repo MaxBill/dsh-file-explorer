@@ -1,6 +1,6 @@
 {
   "name": "dsh-file-explorer",
-  "version": "0.19.4",
+  "version": "0.19.5",
   "description": "文件管理器 — 浏览、预览并直接用起来：文件夹一键变成工作区，文档一键加进当前对话 · A file manager for DeepSeek Harness that turns folders into workspaces and documents into conversation attachments",
   "type": "module",
   "main": "lib/index.js",
