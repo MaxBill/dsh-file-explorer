@@ -2,7 +2,9 @@
 
 A **文件管理器** entry in the DeepSeek Harness left sidebar that opens a full file browser in the main column: browse folders, filter, and preview text and images.
 
-![The 文件管理器 context menu](docs/context-menu.png)
+| List view with the context menu | Icons view |
+|:--|:--|
+| ![The 文件管理器 context menu](docs/context-menu.png) | ![Icons view](docs/views.png) |
 
 Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBill](https://github.com/MaxBill) · License: MIT
 
@@ -11,10 +13,11 @@ Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBil
 - **Left sidebar entry** — registered in `sidebar.panellist` with a folder glyph; the same id addresses the panel registered in the `main` keyed slot.
 - **Browsing** — breadcrumbs, up, home, refresh; double-click a folder to enter it.
 - **Filter and sort** — live name filter; click a column header to sort by name, size, or modified time, with folders always first.
+- **View modes** — switch between **list**, **icons** and **details** from the toolbar (⌘1 / ⌘2 / ⌘3, Ctrl on Windows). Icons lays the folder out as a grid with the sort bar kept on top; details adds a Type column. The choice is remembered for the next session.
 - **Hidden files** — dotfiles are hidden by default and shown with one toggle.
 - **Preview** — text files up to 512 KB render as monospace text, images up to 8 MB render inline from a data URL, anything else shows its metadata.
 - **Context menu** — right-click a file or folder, or the empty area, for the common operations (see below).
-- **Keyboard** — `↑`/`↓` to select, `Enter` to open, `Backspace` to go up, `F2` to rename, `⌘C`/`⌘X`/`⌘V` to copy, cut and paste, `Delete` to move to the Trash.
+- **Keyboard** — `↑`/`↓` to select, `Enter` to open, `Backspace` to go up, `F2` to rename, `⌘C`/`⌘X`/`⌘V` to copy, cut and paste, `Delete` to move to the Trash, `⌘1`/`⌘2`/`⌘3` to switch views.
 - **Remembers the folder** — switching to another panel and back keeps the last directory.
 
 ## Context menu
