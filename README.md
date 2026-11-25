@@ -58,7 +58,7 @@ Limits: 512 KB of text, 8 MB of image, 2000 entries per directory (the footer sa
 | `lib/client.js` | Browser half: a `window.__ModuleLoader__` factory module registering the sidebar icon and the `main` panel |
 | `cordis.patch.yml` | Bundle patch that inserts the `file-explorer` Loader entry |
 
-Icons are inline SVG: `SHAPES` accepts either a 24-grid stroke path list or `{ viewBox, parts: [{ d, fill }] }` filled artwork. The listing uses **ten two-tone icons**: folder, text, PDF, Word, Excel, PowerPoint, archive, image, audio and video (anything else falls back to the outline file icon). Each `viewBox` was recomputed from the artwork's bounding box - documents share one height, the folder is nudged larger - so they read the same size at 44px in the grid and 16px in a row.
+Icons are inline SVG: `SHAPES` accepts either a 24-grid stroke path list or `{ viewBox, parts: [{ d, fill }] }` filled artwork. The listing uses **eleven two-tone icons**: folder, text, PDF, Word, Excel, PowerPoint, archive, image, audio, video, and a neutral "other file" for everything else. Each `viewBox` was recomputed from its artwork's bounding box so every long edge is 88% of the box, which keeps them the same visual size at 44px in the grid and 16px in a row.
 
 ## Install
 
