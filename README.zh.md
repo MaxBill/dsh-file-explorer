@@ -57,7 +57,7 @@
 |:--|:--|
 | `lib/index.js` | Host 端：在 DSH Web Server 上注册 `/api/file-explorer` 前缀路由（`roots` / `list` / `read` / `reveal`） |
 | `lib/client.js` | 浏览器端：`window.__ModuleLoader__` 工厂模块，注册左侧栏图标与 `main` 面板 |
-| `cordis.patch.yml` | Bundle patch，把 `file-explorer` 条目插入 Loader |
+| `cordis.patch.yml` | Bundle patch，把 `dsh-file-explorer` 条目插入 Loader（条目 id 与包名一致） |
 
 图标是内联 SVG：`SHAPES` 既接受 24 网格的描边路径数组，也接受 `{ viewBox, parts: [{ d, fill }] }` 形式的填充图形。文件区按类型用 **11 套双色图标**：文件夹、文本、PDF、Word、Excel、PPT、压缩包、图片、音频、视频，以及给其余类型兜底的「其他文件」。每套图形的 `viewBox` 都按内容包围盒重算，长边统一占盒子 88%，所以 44px 网格与 16px 列表里视觉大小一致。
 

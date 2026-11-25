@@ -3,5 +3,5 @@
 # Mounts the plugin when the package is listed in the profile's
 # package.json -> dsh.profile.bundles.
 - insert:
-    - id: file-explorer
+    - id: dsh-file-explorer
       name: dsh-file-explorer
