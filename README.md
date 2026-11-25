@@ -38,6 +38,8 @@ Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBil
 
 **File or folder**: preview (open, for folders), open with the default app, reveal in Finder, rename…, duplicate, copy, cut, copy path, copy name, move to Trash.
 
+**Folders also get**: **添加为工作区** — registers the folder as a DSH workspace through the client's `workspaces.create({ path })`, so it appears in the sidebar's 工作区 list right away; adding the same path twice reports the host's reason.
+
 **Empty area**: new folder…, new file…, paste, reveal this folder, refresh.
 
 - Copy and cut put the path on the panel's own clipboard; pasting in another folder copies or moves it, and the footer shows what is on the clipboard.
