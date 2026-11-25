@@ -1,6 +1,6 @@
 {
   "name": "dsh-file-explorer",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "description": "文件管理器 — DSH 左侧栏文件浏览与预览面板 · File Explorer with a left sidebar entry for DeepSeek Harness",
   "type": "module",
   "main": "lib/index.js",
