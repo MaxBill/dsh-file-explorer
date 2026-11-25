@@ -20,7 +20,8 @@
     "locale",
     "README.md",
     "README.en.md",
-    "LICENSE"
+    "LICENSE",
+    "screenshots.json"
   ],
   "keywords": [
     "dsh",
