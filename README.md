@@ -16,6 +16,7 @@ Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBil
 
 - **Left sidebar entry** — registered in `sidebar.panellist` with a folder glyph; the same id addresses the panel registered in the `main` keyed slot.
 - **Browsing** — breadcrumbs, up, home, refresh; double-click a folder to enter it.
+- **Address bar** — the tinted breadcrumb strip doubles as a path field: double-click it (or press `⌘L`), type an absolute, relative or `~` path and press Enter. `Esc` cancels, and a path outside the home root is refused.
 - **Filter and sort** — live name filter; click a column header to sort by name, size, or modified time, with folders always first.
 - **View modes** — switch between **list** and **icons** from the toolbar (⌘1 / ⌘2, Ctrl on Windows). The list shows name, type, size and modified time in one row; icons lays the folder out as a grid with the sort bar kept on top. The choice is remembered for the next session.
 - **Hidden files** — dotfiles are hidden by default and shown with one toggle.
@@ -25,7 +26,7 @@ Repository: <https://github.com/MaxBill/dsh-file-explorer> · Developer: [MaxBil
 - **Multi-select** — `⌘`-click to add or drop single rows, `⇧`-click to select a range; cut, copy and delete act on the whole selection.
 - **Undo** — delete, rename, move and create can all be undone (the last 20 steps), and the listing refreshes afterwards.
 - **Context menu** — right-click a file or folder, or the empty area, for the common operations (see below).
-- **Keyboard** — `↑`/`↓` to select, `Enter` to open, `Backspace` to go up, `F2` to rename, `⌘C`/`⌘X`/`⌘V` to copy, cut and paste, `Delete` to move to the Trash, `⌘1`/`⌘2` to switch views, `⌘A` to select all, `⌘⇧A` to deselect all, `⌘⌥A` to invert, `Esc` to clear.
+- **Keyboard** — `↑`/`↓` to select, `Enter` to open, `Backspace` to go up, `F2` to rename, `⌘C`/`⌘X`/`⌘V` to copy, cut and paste, `Delete` to move to the Trash, `⌘1`/`⌘2` to switch views, `⌘A` to select all, `⌘⇧A` to deselect all, `⌘⌥A` to invert, `Esc` to clear, `⌘L` to edit the address bar.
 - **Remembers the folder** — switching to another panel and back keeps the last directory.
 
 ## Context menu
