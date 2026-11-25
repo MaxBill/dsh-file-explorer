@@ -38,6 +38,12 @@ Then just ask: "which months overspent in this spreadsheet?" or "summarise the c
 
 ![Adding a document to the conversation](docs/session-menu.png)
 
+### ③ 引用到输入框 — on a file
+
+For when you would rather not put the bytes into the context: right-click → **引用到输入框** inserts `@/absolute/path` into the composer, and the agent reads the file only when it needs to. Best for code, logs, large files and anything still being edited — cheaper in tokens, and size limits never get in the way.
+
+![Referencing a file in the composer](docs/quote.png)
+
 ### In practice
 
 - **Starting a project**: glance at the icon grid → double-click into the folder → right-click 添加为工作区 → have the agent read the code and run the build.
@@ -72,6 +78,8 @@ Then just ask: "which months overspent in this spreadsheet?" or "summarise the c
 ## Context menu
 
 **File or folder**: preview (open, for folders), open with the default app, reveal in Finder, rename…, duplicate, copy, cut, copy path, copy name, move to Trash.
+
+**Files also get**: **引用到输入框** — inserts `@/absolute/path` into the current conversation's composer (no content copied; the agent reads it on demand). Good for code, big files, or files you are still editing: same intent as 添加到会话, but it points at the file instead of carrying it.
 
 **Common documents also get**: **添加到会话** — images, text, PDF, Word, Excel and PowerPoint files can be handed straight to the current conversation (the same thing as dropping them on the composer; an attachment card appears there). The bytes come from the new `/api/file-explorer/raw` host route.
 
