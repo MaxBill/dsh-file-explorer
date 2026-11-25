@@ -40,14 +40,14 @@ if (typeof route?.handler !== 'function') {
  * @param {unknown} body - JSON body for POST
  * @returns {Promise<{ status: number, body: any }>} response
  */
-function call(method, sub, params = {}, body) {
+function call(method, sub, params = {}, body, headers = {}) {
   return new Promise((resolve, reject) => {
     const search = new URLSearchParams(params).toString()
     const payload = body === undefined ? '' : JSON.stringify(body)
     const req = Readable.from(payload.length > 0 ? [Buffer.from(payload)] : [])
     req.method = method
     req.url = route.path + sub + (search ? '?' + search : '')
-    req.headers = {}
+    req.headers = { ...headers }
     let status = 0
     const res = {
       writeHead(code) { status = code },
@@ -93,6 +93,13 @@ try {
   check('sheet refuses a file that is not a workbook', r.status === 415, r.body)
   r = await call('GET', '/document', { path: join(SCRATCH, 'seed.txt') })
   check('document refuses a file that is not a Word document', r.status === 415, r.body)
+
+  r = await call('GET', '/list', { path: SCRATCH }, undefined, { 'sec-fetch-site': 'cross-site' })
+  check('refuses a cross-site request', r.status === 403, r.body)
+  r = await call('GET', '/list', { path: SCRATCH }, undefined, { origin: 'http://evil.example' })
+  check('refuses a foreign origin', r.status === 403, r.body)
+  r = await call('GET', '/list', { path: SCRATCH }, undefined, { origin: 'http://127.0.0.1:9', host: '127.0.0.1:9', 'sec-fetch-site': 'same-origin' })
+  check('allows a same-origin request', r.status === 200, r.status)
 
   r = await call('POST', '/newfile', { path: join(SCRATCH, 'a'), name: 'one.txt' })
   check('creates a file', r.status === 200, r.body)
