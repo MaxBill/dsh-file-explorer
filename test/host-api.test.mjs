@@ -15,7 +15,7 @@
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { homedir } from 'node:os'
-import { apply, inject } from '../lib/index.js'
+import { apply, inject, __setPlatform, __test } from '../lib/index.js'
 import { readZipForTest } from './zip-helper.mjs'
 
 const SCRATCH = join(homedir(), '.dsh-file-explorer-test')
@@ -186,6 +186,30 @@ try {
   r = await call('POST', '/extract', {}, { path: archivePath })
   check('extract unpacks beside the archive', r.status === 200 && r.body.files === 2 && r.body.skipped === 1, r.body)
   check('extract restores the file contents', (await readFile(join(r.body.path, 'zipped', 'one.txt'), 'utf8')) === 'first file\n')
+
+
+  // ---- per-platform plans (the shells are asserted without running them) ----
+  const darwinReveal = __test.revealPlan(join(SCRATCH, 'a.txt'), 'darwin')
+  check('reveal on macOS uses open -R', darwinReveal.command === 'open' && darwinReveal.args[0] === '-R', darwinReveal)
+  const winReveal = __test.revealPlan('C:\\work\\a.txt', 'win32')
+  check('reveal on Windows selects in Explorer', winReveal.command === 'explorer' && winReveal.args[0] === '/select,C:\\work\\a.txt', winReveal)
+  const linuxReveal = __test.revealPlan('/home/me/a.txt', 'linux')
+  check('reveal on Linux goes through FileManager1', linuxReveal.command === 'dbus-send' && linuxReveal.args.some((arg) => arg.indexOf('ShowItems') !== -1) && linuxReveal.args.some((arg) => arg === 'array:string:file:///home/me/a.txt'), linuxReveal)
+
+  const home = homedir()
+  const darwinTrash = __test.trashPlan(join(SCRATCH, 'a.txt'), 'darwin', false, home)
+  check('macOS trash is ~/.Trash', darwinTrash.kind === 'move' && darwinTrash.dir === join(home, '.Trash'), darwinTrash)
+  const linuxTrash = __test.trashPlan('/home/me/a.txt', 'linux', false, '/home/me')
+  check('Linux trash follows freedesktop', linuxTrash.kind === 'freedesktop' && linuxTrash.filesDir === join('/home/me', '.local', 'share', 'Trash', 'files') && linuxTrash.infoDir === join('/home/me', '.local', 'share', 'Trash', 'info'), linuxTrash)
+  const winTrashFile = __test.trashPlan('C:\\work\\a.txt', 'win32', false, home)
+  const winTrashDir = __test.trashPlan('C:\\work\\d', 'win32', true, home)
+  check('Windows trash sends files to the Recycle Bin', winTrashFile.kind === 'recycle-bin' && winTrashFile.args.join(' ').indexOf('DeleteFile') !== -1 && winTrashFile.args.join(' ').indexOf('SendToRecycleBin') !== -1, winTrashFile.command)
+  check('Windows trash sends folders to the Recycle Bin', winTrashDir.args.join(' ').indexOf('DeleteDirectory') !== -1, winTrashDir.args.length)
+
+  __setPlatform('win32')
+  r = await call('POST', '/mkdir', { path: SCRATCH, name: 'bad:name' })
+  check('win32 refuses names with reserved characters (400)', r.status === 400, r.body)
+  __setPlatform(null)
 
   r = await call('GET', '/git', { path: SCRATCH })
   check('git route answers for a plain folder', r.status === 200 && r.body.repo === null, r.body)
