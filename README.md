@@ -131,7 +131,7 @@
 
 | 文件 | 作用 |
 |:--|:--|
-| `lib/index.js` | Host 端：在 DSH Web Server 上注册 `/api/file-explorer` 前缀路由（`roots` / `list` / `read` / `reveal`） |
+| `lib/index.js` | Host 端：把 `/api/file-explorer` 的 16 条路由注册到 DSH 的 `connection` 服务（`ctx.connection.fetch.register`），鉴权、Host/Origin 校验、浏览器登录态都由宿主统一把关；路径一律 `realpath` 收敛在 `$HOME` 内 |
 | `lib/client.js` | 浏览器端：`window.__ModuleLoader__` 工厂模块，注册左侧栏图标与 `main` 面板 |
 | `cordis.patch.yml` | Bundle patch，把 Loader 条目 `dsh-file-explorer` 插入、加载包 `@maxbill/dsh-file-explorer` |
 

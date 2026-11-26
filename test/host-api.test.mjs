@@ -12,54 +12,55 @@
  * Run with: npm test
  */
 
-import { Readable } from 'node:stream'
 import { mkdir, readdir, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { homedir } from 'node:os'
-import { apply } from '../lib/index.js'
+import { apply, inject } from '../lib/index.js'
 
 const SCRATCH = join(homedir(), '.dsh-file-explorer-test')
 const TRASH = join(homedir(), '.Trash')
 
-let route
+/** Routes the plugin registered on the authenticated connection service. */
+const routes = new Map()
 apply({
-  effect: fn => { fn() },
-  webServer: { register: (candidate) => { route = candidate; return () => {} } },
+  effect: fn => fn(),
+  connection: {
+    fetch: {
+      register: (registration) => {
+        routes.set(registration.path, registration)
+        return () => routes.delete(registration.path)
+      },
+    },
+  },
 })
 
-if (typeof route?.handler !== 'function') {
-  console.error('FAIL the plugin did not register an HTTP handler')
+if (routes.size === 0) {
+  console.error('FAIL the plugin registered no routes')
   process.exit(1)
 }
 
 /**
- * Drive one route with a synthetic request.
+ * Drive one route through the Fetch handler the plugin registered.
  * @param {'GET'|'POST'} method - HTTP method
  * @param {string} sub - route suffix, e.g. "/list"
  * @param {Record<string, string>} params - query parameters
  * @param {unknown} body - JSON body for POST
  * @returns {Promise<{ status: number, body: any }>} response
  */
-function call(method, sub, params = {}, body, headers = {}) {
-  return new Promise((resolve, reject) => {
-    const search = new URLSearchParams(params).toString()
-    const payload = body === undefined ? '' : JSON.stringify(body)
-    const req = Readable.from(payload.length > 0 ? [Buffer.from(payload)] : [])
-    req.method = method
-    req.url = route.path + sub + (search ? '?' + search : '')
-    req.headers = { ...headers }
-    let status = 0
-    const res = {
-      writeHead(code) { status = code },
-      end(chunk) {
-        const text = chunk === undefined ? '' : String(chunk)
-        let parsed = null
-        try { parsed = JSON.parse(text) } catch { parsed = text }
-        resolve({ status, body: parsed })
-      },
-    }
-    Promise.resolve(route.handler(req, res)).catch(reject)
+async function call(method, sub, params = {}, body, headers = {}) {
+  const registration = routes.get('/api/file-explorer' + sub)
+  if (!registration) return { status: 0, body: 'route not registered: ' + sub }
+  const search = new URLSearchParams(params).toString()
+  const request = new Request('http://127.0.0.1:1/api/file-explorer' + sub + (search ? '?' + search : ''), {
+    method,
+    headers,
+    body: body === undefined ? undefined : JSON.stringify(body),
   })
+  const response = await registration.fetch(request)
+  const text = await response.text()
+  let parsed = null
+  try { parsed = JSON.parse(text) } catch { parsed = text }
+  return { status: response.status, body: parsed }
 }
 
 const results = []
@@ -94,12 +95,10 @@ try {
   r = await call('GET', '/document', { path: join(SCRATCH, 'seed.txt') })
   check('document refuses a file that is not a Word document', r.status === 415, r.body)
 
-  r = await call('GET', '/list', { path: SCRATCH }, undefined, { 'sec-fetch-site': 'cross-site' })
-  check('refuses a cross-site request', r.status === 403, r.body)
-  r = await call('GET', '/list', { path: SCRATCH }, undefined, { origin: 'http://evil.example' })
-  check('refuses a foreign origin', r.status === 403, r.body)
-  r = await call('GET', '/list', { path: SCRATCH }, undefined, { origin: 'http://127.0.0.1:9', host: '127.0.0.1:9', 'sec-fetch-site': 'same-origin' })
-  check('allows a same-origin request', r.status === 200, r.status)
+  // Authentication is the host's job: the routes live on the connection gate,
+  // so the plugin never has to parse Origin/Sec-Fetch-Site itself.
+  check('the plugin injects the authenticated connection service', inject.includes('connection') && !inject.includes('webServer'), inject)
+  check('every route is registered with its methods', routes.size === 16 && routes.get('/api/file-explorer/list').methods.join() === 'GET' && routes.get('/api/file-explorer/trash').methods.join() === 'POST', [...routes.keys()].length)
 
   r = await call('POST', '/newfile', { path: join(SCRATCH, 'a'), name: 'one.txt' })
   check('creates a file', r.status === 200, r.body)
@@ -148,19 +147,14 @@ try {
   r = await call('POST', '/rename', { path: homedir(), name: 'x' })
   check('refuses to rename the root (403)', r.status === 403)
   r = await call('GET', '/nope', {})
-  check('unknown routes answer 404', r.status === 404)
+  check('unknown suffixes are never registered', r.status === 0 && routes.has('/api/file-explorer/list'), r.body.message)
 
-  r = await new Promise((resolve) => {
-    const req = Readable.from([Buffer.from('not json')])
-    req.method = 'POST'
-    req.url = route.path + '/transfer'
-    req.headers = {}
-    const res = {
-      writeHead(code) { this.code = code },
-      end(chunk) { resolve({ status: this.code, body: JSON.parse(String(chunk)) }) },
-    }
-    route.handler(req, res)
-  })
+  const malformed = routes.get('/api/file-explorer/transfer')
+  const malformedResponse = await malformed.fetch(new Request('http://127.0.0.1:1/api/file-explorer/transfer', {
+    method: 'POST',
+    body: 'not json',
+  }))
+  r = { status: malformedResponse.status, body: JSON.parse(await malformedResponse.text()) }
   check('malformed JSON answers 400', r.status === 400, r.body.message)
 } catch (error) {
   check('test run completed without throwing', false, String(error?.stack ?? error))
