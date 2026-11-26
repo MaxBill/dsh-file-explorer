@@ -1,8 +1,10 @@
 [
-  "docs/views.png",
-  "docs/context-menu.png",
-  "docs/preview-markdown.png",
-  "docs/preview-xlsx.png",
-  "docs/preview-docx.png",
-  "docs/options.png"
+  "docs/panel.png",
+  "docs/icon-view.png",
+  "docs/grouped.png",
+  "docs/editor.png",
+  "docs/workspace-menu.png",
+  "docs/session-menu.png",
+  "docs/drag-session.png",
+  "docs/workspace-switch.png"
 ]
