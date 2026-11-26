@@ -44,6 +44,18 @@ For when you would rather not put the bytes into the context: right-click → **
 
 ![Referencing a file in the composer](docs/quote.png)
 
+### ④ Drag into the conversation — any entry
+
+Select a file (or a whole multi-selection) and drag it out of the list: a "松手加入当前会话" strip rises from the bottom of the panel. Let go and the files land in the composer as attachments, while folders become `@path` mentions — the same destination as the 添加到会话 menu, without moving your hand off the mouse.
+
+![Dragging a file into the conversation](docs/drag-session.png)
+
+### ⑤ Switch workspace in one click — left of the toolbar
+
+The leftmost toolbar button is the workspace the current folder belongs to: open it for every workspace on this machine (path tail included, current one ticked) and pick one to jump straight there. The last row adds the current folder as a workspace. No more "back to the sidebar → find the workspace → click down from home".
+
+![The workspace switcher](docs/workspace-switch.png)
+
 ### In practice
 
 - **Starting a project**: glance at the icon grid → double-click into the folder → right-click 添加为工作区 → have the agent read the code and run the build.
@@ -52,6 +64,8 @@ For when you would rather not put the bytes into the context: right-click → **
 
 ## What it does
 
+- **Workspace switcher** — the toolbar's first button names the workspace holding the current folder (or just "工作区"), lists every workspace from the live `ctx.workspaces` snapshot with the current one ticked, and jumps on pick; the last row registers the current folder as a workspace.
+- **Drag into the conversation** — drag an entry (or the whole selection) out of the list; a strip rises at the bottom and dropping hands files over as attachments and folders as mentions, through the same composer channel as 添加到会话.
 - **Left sidebar entry** — registered in `sidebar.panellist` with a folder glyph; the same id addresses the panel registered in the `main` keyed slot.
 - **Plugin-page icon** — `package.json`'s `icon` points at `icon.svg` (the purple folder), which is what the installed-plugins list shows.
 - **Browsing** — breadcrumbs, up, home, refresh; double-click a folder to enter it.
