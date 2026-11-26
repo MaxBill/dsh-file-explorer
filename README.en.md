@@ -152,6 +152,8 @@ When the page is reached over the LAN or a tunnel, the actions that **run on the
 
 Browsing, previewing, editing, uploading, downloading, zipping, git badges, attaching to the conversation, quoting into the composer and adding a workspace all stay — they act on the host's files, which is exactly what a remote session is for.
 
+Upload and download are **network** operations (browser ⇄ host) that never touch the host's desktop session, so remotely they are not just kept but are the main way to move files; over a remote connection the 更多 → upload rows gain a small "从本机上传" hint saying the bytes come from the browser you are using.
+
 Detection: the host answers `/env`; a loopback Host counts as local, and a browser whose OS differs from the host's (a common SSH-forward case) is treated as remote.
 
 ## Safety
