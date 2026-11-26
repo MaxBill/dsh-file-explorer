@@ -109,6 +109,8 @@ The leftmost toolbar button is the workspace the current folder belongs to: open
 - **Context menu** — right-click a file or folder, or the empty area, for the common operations (see below).
 - **Keyboard** — `↑`/`↓` to select, `Enter` to open, `Backspace` to go up, `F2` to rename, `⌘C`/`⌘X`/`⌘V` to copy, cut and paste, `Delete` to move to the Trash, `⌘1`/`⌘2` to switch views, `⌘A` to select all, `⌘⇧A` to deselect all, `⌘⌥A` to invert, `Esc` to clear, `⌘L` to edit the address bar.
 - **Remembers the folder** — switching to another panel and back keeps the last directory.
+- **Upload (remote only)** — 更多 → upload files… / upload a folder…; the bytes stream onto the host's disk (never buffered in memory), with a progress bar, automatic renaming instead of overwriting, and a 512 MB cap per file. In the host's own browser the row is hidden: the file already sits on that disk, so Finder or 新建 / 粘贴 is the direct route.
+- **Download / zip / unzip** — right-click 下载 saves the file; 压缩为 ZIP writes a sibling archive; on a `.zip`, 解压到此处 extracts it and refuses any entry that would escape the target folder. The archive side is built by the host itself with `zlib`, no third-party library.
 
 ## Context menu
 
@@ -150,9 +152,9 @@ When the page is reached over the LAN or a tunnel, the actions that **run on the
 - Open with the default application
 - Move to Trash (with the toolbar's delete button and the `Delete` shortcut)
 
-Browsing, previewing, editing, uploading, downloading, zipping, git badges, attaching to the conversation, quoting into the composer and adding a workspace all stay — they act on the host's files, which is exactly what a remote session is for.
+Browsing, previewing, editing, downloading, zipping, git badges, attaching to the conversation, quoting into the composer and adding a workspace all stay — they act on the host's files, which is exactly what a remote session is for.
 
-Upload and download are **network** operations (browser ⇄ host) that never touch the host's desktop session, so remotely they are not just kept but are the main way to move files; over a remote connection the 更多 → upload rows gain a small "从本机上传" hint saying the bytes come from the browser you are using.
+**Upload** is the mirror image: it appears only over a remote connection, where it is the main way to put your machine's files onto the host (更多 → upload, with a "从本机上传" hint saying the bytes come from the browser you are using). Open the panel in the host's own browser and the row is gone — the file is already on that same disk, so Finder or 新建 / 粘贴 is the direct route and a round trip through the browser picker would just copy it to itself.
 
 Detection: the host answers `/env`; a loopback Host counts as local, and a browser whose OS differs from the host's (a common SSH-forward case) is treated as remote.
 
