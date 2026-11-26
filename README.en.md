@@ -128,6 +128,18 @@ For when you would rather not put the bytes into the context: right-click → **
 >
 > If something breaks on either, please open an [issue](https://github.com/MaxBill/dsh-file-explorer/issues) with the OS version, the matching error from the DSH log, and the steps.
 
+### What changes over a remote connection
+
+When the page is reached over the LAN or a tunnel, the actions that **run on the host and need a desktop session** are hidden, and the status bar shows “Remote access · desktop actions hidden”:
+
+- Reveal in Finder / Explorer (including “reveal current folder” and the preview pane's bottom button)
+- Open with the default application
+- Move to Trash (with the toolbar's delete button and the `Delete` shortcut)
+
+Browsing, previewing, editing, uploading, downloading, zipping, git badges, attaching to the conversation, quoting into the composer and adding a workspace all stay — they act on the host's files, which is exactly what a remote session is for.
+
+Detection: the host answers `/env`; a loopback Host counts as local, and a browser whose OS differs from the host's (a common SSH-forward case) is treated as remote.
+
 ## Safety
 
 Every requested path is resolved with `realpath()` before the containment check, so neither `..` segments nor symbolic links escape the browsing root. The root is the current user's home directory, and out-of-root requests answer `403`.
