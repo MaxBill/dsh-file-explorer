@@ -163,7 +163,7 @@ git clone https://github.com/MaxBill/dsh-file-explorer.git ~/.dsh/plugins/dsh-fi
 dsh plugin --profile desktop add link:$HOME/.dsh/plugins/dsh-file-explorer
 ```
 
-**② From npm**
+**② From npm** (not published yet — works once the package is on the registry)
 
 ```sh
 dsh plugin --profile desktop add @maxbill/dsh-file-explorer
@@ -194,6 +194,15 @@ npm test        # host HTTP tests, run in a temporary directory under $HOME and 
 ```
 
 There is no build step: `lib/index.js` is plain ESM and `lib/client.js` is a hand-written `window.__ModuleLoader__` factory module.
+
+**Publish to npm** (maintainers): `package.json` already sets `publishConfig.access = "public"`, so once you are logged in it is one command.
+
+```sh
+npm login                                   # an account that owns the @maxbill scope
+npm publish                                 # ships lib / assets / docs / locale
+```
+
+Keep the version in `package.json` equal to the GitHub Release tag.
 
 | File | Purpose |
 |:--|:--|

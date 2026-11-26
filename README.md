@@ -165,7 +165,7 @@ git clone https://github.com/MaxBill/dsh-file-explorer.git ~/.dsh/plugins/dsh-fi
 dsh plugin --profile desktop add link:$HOME/.dsh/plugins/dsh-file-explorer
 ```
 
-**② 从 npm**
+**② 从 npm**（尚未发布，发布后可用）
 
 ```sh
 dsh plugin --profile desktop add @maxbill/dsh-file-explorer
@@ -196,6 +196,15 @@ npm test        # host 端 HTTP 接口测试，在 $HOME 下的临时目录里�
 ```
 
 没有构建步骤：`lib/index.js` 是普通 ESM，`lib/client.js` 是手写的 `window.__ModuleLoader__` 工厂模块。
+
+**发布到 npm**（维护者）：`package.json` 已声明 `publishConfig.access = "public"`，登录后直接发即可。
+
+```sh
+npm login                                   # 需要属于 @maxbill scope 的账号
+npm publish                                 # 会带上 lib / assets / docs / locale
+```
+
+发完把版本号写进 `package.json` 前先确认它和 GitHub Release 的 tag 一致。
 
 | 文件 | 作用 |
 |:--|:--|
