@@ -12,10 +12,11 @@
  * Run with: npm test
  */
 
-import { mkdir, readdir, rm, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { homedir } from 'node:os'
 import { apply, inject } from '../lib/index.js'
+import { readZipForTest } from './zip-helper.mjs'
 
 const SCRATCH = join(homedir(), '.dsh-file-explorer-test')
 const TRASH = join(homedir(), '.Trash')
@@ -98,7 +99,7 @@ try {
   // Authentication is the host's job: the routes live on the connection gate,
   // so the plugin never has to parse Origin/Sec-Fetch-Site itself.
   check('the plugin injects the authenticated connection service', inject.includes('connection') && !inject.includes('webServer'), inject)
-  check('every route is registered with its methods', routes.size === 16 && routes.get('/api/file-explorer/list').methods.join() === 'GET' && routes.get('/api/file-explorer/trash').methods.join() === 'POST', [...routes.keys()].length)
+  check('every route is registered with its methods', routes.size === 22 && routes.get('/api/file-explorer/list').methods.join() === 'GET' && routes.get('/api/file-explorer/trash').methods.join() === 'POST', [...routes.keys()].length)
 
   r = await call('POST', '/newfile', { path: join(SCRATCH, 'a'), name: 'one.txt' })
   check('creates a file', r.status === 200, r.body)
@@ -146,6 +147,49 @@ try {
   check('refuses writes outside the root (403)', r.status === 403, r.body.message)
   r = await call('POST', '/rename', { path: homedir(), name: 'x' })
   check('refuses to rename the root (403)', r.status === 403)
+
+  // ---- upload / download / archive / extract / git / write ----------------
+  const uploadRoute = routes.get('/api/file-explorer/upload')
+  const uploadResponse = await uploadRoute.fetch(new Request(
+    'http://127.0.0.1:1/api/file-explorer/upload?path=' + encodeURIComponent(SCRATCH) + '&name=uploaded.txt',
+    { method: 'POST', body: 'hello from the browser' },
+  ))
+  const uploaded = await uploadResponse.json()
+  check('upload writes the streamed body', uploadResponse.status === 200 && uploaded.size === 22 && uploaded.name === 'uploaded.txt', uploaded)
+  const bytes = await readFile(uploaded.path, 'utf8')
+  check('uploaded bytes match the request body', bytes === 'hello from the browser', bytes)
+
+  const clashResponse = await uploadRoute.fetch(new Request(
+    'http://127.0.0.1:1/api/file-explorer/upload?path=' + encodeURIComponent(SCRATCH) + '&name=uploaded.txt',
+    { method: 'POST', body: 'second' },
+  ))
+  const clash = await clashResponse.json()
+  check('upload never overwrites, it renames', clashResponse.status === 200 && clash.path !== uploaded.path && /uploaded 2\.txt$/.test(clash.path), clash)
+
+  r = await call('GET', '/download', { path: uploaded.path })
+  check('download serves the file as an attachment', r.body.includes('browser') || r.status === 200, r.status)
+
+  r = await call('POST', '/write', { path: uploaded.path }, { text: 'edited in the panel\n' })
+  check('write saves the editor contents', r.status === 200 && r.body.size === 20, r.body)
+  check('write really replaced the bytes', (await readFile(uploaded.path, 'utf8')) === 'edited in the panel\n')
+
+  await mkdir(join(SCRATCH, 'zipped'), { recursive: true })
+  await writeFile(join(SCRATCH, 'zipped', 'one.txt'), 'first file\n')
+  await writeFile(join(SCRATCH, 'zipped', 'two.txt'), 'second file\n')
+  r = await call('POST', '/archive', {}, { sources: [join(SCRATCH, 'zipped')] })
+  check('archive zips a folder beside itself', r.status === 200 && /\.zip$/.test(r.body.path), r.body)
+  const archivePath = r.body?.path
+  const archiveEntries = readZipForTest(await readFile(archivePath))
+  check('archive holds every file', archiveEntries.has('zipped/one.txt') && archiveEntries.has('zipped/two.txt'), [...archiveEntries.keys()])
+  check('archive round-trips the bytes', String(archiveEntries.get('zipped/one.txt')) === 'first file\n', String(archiveEntries.get('zipped/one.txt')))
+
+  r = await call('POST', '/extract', {}, { path: archivePath })
+  check('extract unpacks beside the archive', r.status === 200 && r.body.files === 2 && r.body.skipped === 1, r.body)
+  check('extract restores the file contents', (await readFile(join(r.body.path, 'zipped', 'one.txt'), 'utf8')) === 'first file\n')
+
+  r = await call('GET', '/git', { path: SCRATCH })
+  check('git route answers for a plain folder', r.status === 200 && r.body.repo === null, r.body)
+
   r = await call('GET', '/nope', {})
   check('unknown suffixes are never registered', r.status === 0 && routes.has('/api/file-explorer/list'), r.body.message)
 
