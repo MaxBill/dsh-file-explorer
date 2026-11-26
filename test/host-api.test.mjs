@@ -99,7 +99,7 @@ try {
   // Authentication is the host's job: the routes live on the connection gate,
   // so the plugin never has to parse Origin/Sec-Fetch-Site itself.
   check('the plugin injects the authenticated connection service', inject.includes('connection') && !inject.includes('webServer'), inject)
-  check('every route is registered with its methods', routes.size === 22 && routes.get('/api/file-explorer/list').methods.join() === 'GET' && routes.get('/api/file-explorer/trash').methods.join() === 'POST', [...routes.keys()].length)
+  check('every route is registered with its methods', routes.size === 23 && routes.get('/api/file-explorer/list').methods.join() === 'GET' && routes.get('/api/file-explorer/trash').methods.join() === 'POST', [...routes.keys()].length)
 
   r = await call('POST', '/newfile', { path: join(SCRATCH, 'a'), name: 'one.txt' })
   check('creates a file', r.status === 200, r.body)
@@ -187,6 +187,16 @@ try {
   check('extract unpacks beside the archive', r.status === 200 && r.body.files === 2 && r.body.skipped === 1, r.body)
   check('extract restores the file contents', (await readFile(join(r.body.path, 'zipped', 'one.txt'), 'utf8')) === 'first file\n')
 
+
+
+  // ---- /env: is the browser on the host machine? ----
+  const localEnv = await call('GET', '/env', {}, undefined, { host: '127.0.0.1:3080' })
+  check('/env treats loopback as local', localEnv.status === 200 && localEnv.body.local === true, localEnv.body)
+  const lanEnv = await call('GET', '/env', {}, undefined, { host: '192.168.1.24:3080' })
+  check('/env treats a LAN host as remote', lanEnv.status === 200 && lanEnv.body.local === false, lanEnv.body)
+  const tunnelEnv = await call('GET', '/env', {}, undefined, { host: 'box.trycloudflare.com' })
+  check('/env treats a tunnel host as remote', tunnelEnv.status === 200 && tunnelEnv.body.local === false && tunnelEnv.body.hostname === 'box.trycloudflare.com', tunnelEnv.body)
+  check('/env reports the host platform', typeof lanEnv.body.platform === 'string' && lanEnv.body.platform.length > 0, lanEnv.body.platform)
 
   // ---- per-platform plans (the shells are asserted without running them) ----
   const darwinReveal = __test.revealPlan(join(SCRATCH, 'a.txt'), 'darwin')
