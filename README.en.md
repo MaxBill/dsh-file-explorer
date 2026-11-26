@@ -123,7 +123,7 @@ Limits: 512 KB of text, 8 MB of image, 2000 entries per directory (the footer sa
 
 | File | Role |
 |:--|:--|
-| `lib/index.js` | Host half: registers the `/api/file-explorer` prefix route on the DSH web server (`roots`, `list`, `read`, `reveal`) |
+| `lib/index.js` | Host half: registers the 16 `/api/file-explorer` routes on DSH's `connection` service (`ctx.connection.fetch.register`), so auth, the Host/Origin fence and the browser login all come from the host; every path is confined to `$HOME` by `realpath` |
 | `lib/client.js` | Browser half: a `window.__ModuleLoader__` factory module registering the sidebar icon and the `main` panel |
 | `cordis.patch.yml` | Bundle patch: inserts the `dsh-file-explorer` Loader entry, which loads `@maxbill/dsh-file-explorer` |
 
