@@ -113,6 +113,21 @@ For when you would rather not put the bytes into the context: right-click → **
 - No write operation overwrites: a name clash becomes `name 2` / `name 副本` (or a `409` for a rename onto an existing name).
 - Rename and create use in-panel dialogs: `Enter` confirms, `Esc` cancels, and rename preselects the name without its extension.
 
+## Platform support
+
+| Capability | macOS | Windows | Linux |
+|:--|:--|:--|:--|
+| Browse / preview (XLSX · DOCX included) / edit / upload / download / zip | ✅ tested | ⚠️ untested | ⚠️ untested |
+| Open with the default app | ✅ `open` | ✅ `cmd /c start` | ✅ `xdg-open` |
+| Reveal in the file manager | ✅ `open -R` | ✅ `explorer /select,` | ✅ FileManager1 (falls back to opening the folder) |
+| Move to Trash | ✅ `~/.Trash` | ✅ Recycle Bin via PowerShell, `~/.Trash` as fallback | ✅ freedesktop trash, with a `.trashinfo` sidecar |
+| Typed paths | ✅ POSIX | ✅ `C:\dir` and UNC `\\server\share` | ✅ POSIX |
+| Upload a whole folder | ✅ | ✅ | ✅ via `webkitdirectory`: Chrome / Edge / Firefox, not Safari (falls back to picking files) |
+
+> ⚠️ **Windows and Linux have not been verified on real machines.** Both are implemented to each platform's own convention (Explorer's `/select,` switch, the Recycle Bin's `SendToRecycleBin`, the freedesktop `files`+`info` layout) and `npm test` covers the three shells through platform-plan cases, but nobody has clicked through the panel there yet.
+>
+> If something breaks on either, please open an [issue](https://github.com/MaxBill/dsh-file-explorer/issues) with the OS version, the matching error from the DSH log, and the steps.
+
 ## Safety
 
 Every requested path is resolved with `realpath()` before the containment check, so neither `..` segments nor symbolic links escape the browsing root. The root is the current user's home directory, and out-of-root requests answer `403`.

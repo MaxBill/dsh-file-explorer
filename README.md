@@ -127,6 +127,21 @@
 - 所有写入操作都不覆盖已有项：同名冲突时自动改成 `名称 2`、`名称 副本`，或返回 `409`。
 - 重命名 / 新建用面板内的对话框，`Enter` 确认、`Esc` 取消；重命名会预选中不含扩展名的部分。
 
+## 平台支持
+
+| 能力 | macOS | Windows | Linux |
+|:--|:--|:--|:--|
+| 浏览 / 预览（含 XLSX·DOCX）/ 编辑 / 上传 / 下载 / 压缩解压 | ✅ 已实测 | ⚠️ 未实测 | ⚠️ 未实测 |
+| 用默认应用打开 | ✅ `open` | ✅ `cmd /c start` | ✅ `xdg-open` |
+| 在文件管理器中显示 | ✅ `open -R` | ✅ `explorer /select,` | ✅ FileManager1（服务缺失时退回打开所在目录） |
+| 移到废纸篓 | ✅ `~/.Trash` | ✅ 系统回收站（PowerShell，失败退回 `~/.Trash`） | ✅ freedesktop 废纸篓（附带 `.trashinfo` 可还原） |
+| 地址栏输入路径 | ✅ POSIX | ✅ 盘符 `C:\dir` 与 UNC `\\server\share` | ✅ POSIX |
+| 上传整个文件夹 | ✅ | ✅ | ✅ 依赖 `webkitdirectory`：Chrome / Edge / Firefox 支持，Safari 不支持（退化为选择文件） |
+
+> ⚠️ **Windows 与 Linux 尚未在真机上完整验收。** 这两个平台的分支按各自官方约定实现（Explorer 的 `/select,` 参数、回收站的 `SendToRecycleBin`、freedesktop 的 `files`+`info` 目录结构），并在 `npm test` 里用「平台计划」用例模拟三套系统验证了命令与路径拼接；但没有在实机上点过一遍。
+>
+> 在这两个平台上遇到问题，请在 [issues](https://github.com/MaxBill/dsh-file-explorer/issues) 里附上：操作系统版本、DSH 日志里对应的报错、以及复现步骤。
+
 ## 安全边界
 
 所有路径都先 `realpath()` 再校验，因此 `..` 与符号链接都无法逃出浏览根目录；根目录固定为当前用户主目录。越界请求返回 `403`。
