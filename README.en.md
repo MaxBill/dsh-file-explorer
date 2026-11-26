@@ -163,11 +163,13 @@ git clone https://github.com/MaxBill/dsh-file-explorer.git ~/.dsh/plugins/dsh-fi
 dsh plugin --profile desktop add link:$HOME/.dsh/plugins/dsh-file-explorer
 ```
 
-**② From npm** (not published yet — works once the package is on the registry)
+**② From npm** (published: [npmjs.com/package/@maxbill/dsh-file-explorer](https://www.npmjs.com/package/@maxbill/dsh-file-explorer))
 
 ```sh
 dsh plugin --profile desktop add @maxbill/dsh-file-explorer
 ```
+
+The version tracks the GitHub Release tag (currently `1.0.1`). Behind the CNPM mirror, add the official registry: `npm i @maxbill/dsh-file-explorer --registry=https://registry.npmjs.org/`.
 
 **③ Hand-write the profile**
 

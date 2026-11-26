@@ -165,11 +165,13 @@ git clone https://github.com/MaxBill/dsh-file-explorer.git ~/.dsh/plugins/dsh-fi
 dsh plugin --profile desktop add link:$HOME/.dsh/plugins/dsh-file-explorer
 ```
 
-**② 从 npm**（尚未发布，发布后可用）
+**② 从 npm**（已发布：[npmjs.com/package/@maxbill/dsh-file-explorer](https://www.npmjs.com/package/@maxbill/dsh-file-explorer)）
 
 ```sh
 dsh plugin --profile desktop add @maxbill/dsh-file-explorer
 ```
+
+版本与 GitHub Release 的 tag 一致（当前 `1.0.1`）。国内网络若用 CNPM 镜像装依赖，把这条命令加上官方源亦可：`npm i @maxbill/dsh-file-explorer --registry=https://registry.npmjs.org/`。
 
 **③ 手动写进 profile**
 
