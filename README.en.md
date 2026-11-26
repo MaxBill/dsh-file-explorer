@@ -195,12 +195,17 @@ npm test        # host HTTP tests, run in a temporary directory under $HOME and 
 
 There is no build step: `lib/index.js` is plain ESM and `lib/client.js` is a hand-written `window.__ModuleLoader__` factory module.
 
-**Publish to npm** (maintainers): `package.json` already sets `publishConfig.access = "public"`, so once you are logged in it is one command.
+**Publish to npm** (maintainers)
+
+On a machine whose default registry is the **CNPM mirror** (`registry.npmmirror.com`), `npm login` fails with "Public registration is not allowed": a mirror only caches packages, so it cannot register, log in or publish. Log in to the official registry once instead:
 
 ```sh
-npm login                                   # an account that owns the @maxbill scope
-npm publish                                 # ships lib / assets / docs / locale
+npm login --registry=https://registry.npmjs.org/   # an account that owns the @maxbill scope (create the org on npmjs.com if not)
+npm publish                                        # publishConfig.registry already points at npmjs
+npm view @maxbill/dsh-file-explorer version --registry=https://registry.npmjs.org/
 ```
+
+`package.json` declares both `access: "public"` (scoped packages are private by default) and that `registry`, so the mirror setting can never be picked up by accident, and the token it writes to `~/.npmrc` is scoped to npmjs, leaving the mirror in place for ordinary installs. Accounts with two-factor auth pass `--otp=123456` at publish time.
 
 Keep the version in `package.json` equal to the GitHub Release tag.
 

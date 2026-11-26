@@ -197,14 +197,19 @@ npm test        # host 端 HTTP 接口测试，在 $HOME 下的临时目录里�
 
 没有构建步骤：`lib/index.js` 是普通 ESM，`lib/client.js` 是手写的 `window.__ModuleLoader__` 工厂模块。
 
-**发布到 npm**（维护者）：`package.json` 已声明 `publishConfig.access = "public"`，登录后直接发即可。
+**发布到 npm**（维护者）
+
+本机默认 registry 常被设成 **CNPM 镜像**（`registry.npmmirror.com`）——镜像只做加速、**不能注册、不能登录、也不能发布**，在那里 `npm login` 会直接提示 "Public registration is not allowed"。官方源需要单独登录：
 
 ```sh
-npm login                                   # 需要属于 @maxbill scope 的账号
-npm publish                                 # 会带上 lib / assets / docs / locale
+npm login --registry=https://registry.npmjs.org/   # 账号需拥有 @maxbill scope（没有就先去 npmjs.com 建组织）
+npm publish                                        # publishConfig.registry 已指向官方源，无需额外参数
+npm view @maxbill/dsh-file-explorer version --registry=https://registry.npmjs.org/
 ```
 
-发完把版本号写进 `package.json` 前先确认它和 GitHub Release 的 tag 一致。
+`package.json` 里的 `publishConfig` 同时声明了 `access: "public"`（scoped 包默认私有）和 `registry`（指向官方源），所以镜像配置不会被误用；登录令牌写在 `~/.npmrc` 里按源隔离，不会影响平时用镜像装包。开了两步验证的账号发布时按提示带 `--otp=123456`。
+
+发布前确认 `package.json` 的 `version` 与 GitHub Release 的 tag 一致。
 
 | 文件 | 作用 |
 |:--|:--|
